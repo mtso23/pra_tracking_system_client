@@ -89,7 +89,7 @@ export const COLUMNS_TO_LABELS = {
   dataactionable: "Actionable",
   datacleaned: "Cleaned",
   datageocoded: "Geocoded",
-  dataanalyzed: "Aanalyzed"
+  dataanalyzed: "Analyzed"
 };
 
 export const STATUSES = [
