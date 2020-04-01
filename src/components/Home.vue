@@ -52,6 +52,17 @@ export default {
   grid-area: header;
 }
 
+.b-table {
+  max-width: 100vw;
+  overflow-x: scroll;
+}
+
+.button.is-primary {
+    background-color: #dd6b4c;
+    border-color: transparent;
+    color: white;
+}
+
 #table {
   grid-area: table;
 }

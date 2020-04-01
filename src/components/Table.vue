@@ -211,6 +211,14 @@
           </span>
         </b-table-column>
         <b-table-column
+          field="linktoprarequest"
+          label="Link to PRA Request"
+          centered
+          :visible="VIEWABLE_COLUMNS['CURRENT_INFO']['linktoprarequest']"
+          sortable
+        >
+        </b-table-column>
+        <b-table-column
           field="leadmember"
           label="Lead member"
           searchable

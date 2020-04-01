@@ -18,7 +18,8 @@ export const VIEWABLE_COLUMNS = {
   CURRENT_INFO: {
     leadmember: true,
     currentstatus: true,
-    dateoflastcontact: false
+    dateoflastcontact: false,
+    linktoprarequest: true,
   },
   ANALYSIS: {
     datereceived: true,
@@ -80,6 +81,7 @@ export const COLUMNS_TO_LABELS = {
   enddatereturned: "End date returned",
   leadmember: "Lead member",
   dateoflastcontact: "Date of last contact",
+  linktoprarequest: "Link to PRA Request",
   issheriffsdept: "SD/PD",
   datatype: "Data type",
   datereceived: "Date received",
