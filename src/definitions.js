@@ -1,19 +1,20 @@
-/* exported DEFAULT_VIEWABLE_COLUMNS */
 export const ACCESS_CONTROL = { access: "none" };
 
+/* Defines which columns are seen by default */
+/* mark true to show by default and false to hide */
 export const VIEWABLE_COLUMNS = {
   INITIAL_INFO: {
     county: true,
     lea: true,
     dateofrequest: true,
     issheriffsdept: true,
-    datatype: true
+    datatype: true,
   },
   DATES: {
-    startdaterequested: true,
-    enddaterequested: true,
-    startdatereturned: false,
-    enddatereturned: false
+    startdaterequested: false,
+    enddaterequested: false,
+    startdatereturned: true,
+    enddatereturned: true,
   },
   CURRENT_INFO: {
     leadmember: true,
@@ -29,15 +30,15 @@ export const VIEWABLE_COLUMNS = {
     dataactionable: false,
     datacleaned: false,
     datageocoded: false,
-    dataanalyzed: false
-  }
+    dataanalyzed: false,
+  },
 };
 
 export const SEARCHABLE_COLUMNS = new Set([
   "county",
   "lea",
   "leadmember",
-  "currentstatus"
+  "currentstatus",
 ]);
 
 const ALL = [
@@ -67,7 +68,7 @@ const ALL = [
   { variables: "Variables" }, // each entry is stored with variable name as key, and then two subkeys:
   // the subkeys are requested (bool as value) and received (bool as value)
   { variableschecked: "Variables checked?" },
-  { variablescomplete: "Variables complete?" }
+  { variablescomplete: "Variables complete?" },
 ];
 
 export const COLUMNS_TO_LABELS = {
@@ -91,7 +92,7 @@ export const COLUMNS_TO_LABELS = {
   dataactionable: "Actionable",
   datacleaned: "Cleaned",
   datageocoded: "Geocoded",
-  dataanalyzed: "Analyzed"
+  dataanalyzed: "Analyzed",
 };
 
 export const STATUSES = [
@@ -99,7 +100,7 @@ export const STATUSES = [
   "Data requested - in process",
   "Data received - incomplete",
   "Data received - no errors",
-  "Data ready for analysis"
+  "Data ready for analysis",
 ];
 
 const STATUS_PAIRS = [
@@ -107,7 +108,7 @@ const STATUS_PAIRS = [
   ("Data requested - in process", "Data requested - in process"),
   ("Data received - incomplete", "Data received - incomplete"),
   ("Data received - no errors", "Data received - no errors"),
-  ("Data ready for analysis", "Data ready for analysis")
+  ("Data ready for analysis", "Data ready for analysis"),
 ];
 
 export const CONTACT_METHODS = ["Phone", "Email", "Fax", "Portal"];
@@ -115,66 +116,66 @@ export const CONTACT_METHODS = ["Phone", "Email", "Fax", "Portal"];
 export const INITIAL_VARIABLES = {
   ARREST_ADD: {
     requested: false,
-    received: false
+    received: false,
   },
   ARREST_DT: {
     requested: false,
-    received: false
+    received: false,
   },
   BAIL_AMT: {
     requested: false,
-    received: false
+    received: false,
   },
   CHARGES: {
     requested: false,
-    received: false
+    received: false,
   },
   DOB: {
     requested: false,
-    received: false
+    received: false,
   },
   FIRST_NAME: {
     requested: false,
-    received: false
+    received: false,
   },
   HOME_ADD: {
     requested: false,
-    received: false
+    received: false,
   },
   HOME_ZIP: {
     requested: false,
-    received: false
+    received: false,
   },
   LAST_NAME: {
     requested: false,
-    received: false
+    received: false,
   },
   LEA: {
     requested: false,
-    received: false
+    received: false,
   },
   OCCUPATION: {
     requested: false,
-    received: false
+    received: false,
   },
   RACE: {
     requested: false,
-    received: false
+    received: false,
   },
   RELEASE_DT: {
     requested: false,
-    received: false
+    received: false,
   },
   RELEASE_RSN: {
     requested: false,
-    received: false
+    received: false,
   },
   SEX: {
     requested: false,
-    received: false
+    received: false,
   },
   UNIQUE_ID: {
     requested: false,
-    received: false
-  }
+    received: false,
+  },
 };
