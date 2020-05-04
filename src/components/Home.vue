@@ -58,9 +58,9 @@ export default {
 }
 
 .button.is-primary {
-    background-color: #dd6b4c;
-    border-color: transparent;
-    color: white;
+  background-color: #dd6b4c;
+  border-color: transparent;
+  color: white;
 }
 
 #table {

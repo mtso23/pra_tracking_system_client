@@ -66,9 +66,6 @@
         </div>
       </div>
     </b-collapse>
-    <!-- <div class="buttons">
-      <b-button tag="router-link" to="/form" type="is-link">Create PRA</b-button>
-    </div>-->
     <b-table
       :data="data"
       :columns="columns"
@@ -84,6 +81,21 @@
       default-sort="county"
     >
       <template slot-scope="props">
+        <b-table-column centered>
+          <b-button
+            field="id"
+            type="is-primary"
+            outlined
+            tag="router-link"
+            :to="{
+              name: 'Form',
+              params: {
+                initialData: data.find(el => el['id'] == props.row.id),
+                updating: true
+              }
+            }"
+          >View</b-button>
+        </b-table-column>
         <b-table-column
           field="county"
           label="County"
@@ -216,8 +228,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['CURRENT_INFO']['linktoprarequest']"
           sortable
-        >
-        </b-table-column>
+        ></b-table-column>
         <b-table-column
           field="leadmember"
           label="Lead member"
@@ -333,21 +344,6 @@
           sortable
         >
           <span class="tag is-medium">{{ props.row.dataanalyzed }}</span>
-        </b-table-column>
-        <b-table-column centered>
-          <b-button
-            field="id"
-            type="is-primary"
-            outlined
-            tag="router-link"
-            :to="{
-              name: 'Form',
-              params: {
-                initialData: data.find(el => el['id'] == props.row.id),
-                updating: true
-              }
-            }"
-          >View</b-button>
         </b-table-column>
       </template>
 
