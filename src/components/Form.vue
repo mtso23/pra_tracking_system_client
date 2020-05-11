@@ -176,6 +176,10 @@
             ></b-datepicker>
           </b-field>
 
+          <b-field label="Previous status" :type="{ 'is-success': data.currentstatus }">
+            <b-tag type="text" size="is-medium">{{data.currentstatus}}</b-tag>
+          </b-field>
+
           <b-field label="Status" :type="{ 'is-success': data.currentstatus }">
             <b-select placeholder="Select a status" required v-model="data.currentstatus">
               <option v-for="status in STATUSES" :key="status" :value="status">{{ status }}</option>
