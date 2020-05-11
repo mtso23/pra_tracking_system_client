@@ -96,19 +96,12 @@ export const COLUMNS_TO_LABELS = {
 };
 
 export const STATUSES = [
-  "Data requested - no response",
-  "Data requested - in process",
-  "Data received - incomplete",
-  "Data received - no errors",
-  "Data ready for analysis",
-];
-
-const STATUS_PAIRS = [
-  ("Data requested - no response", "Data requested - no response"),
-  ("Data requested - in process", "Data requested - in process"),
-  ("Data received - incomplete", "Data received - incomplete"),
-  ("Data received - no errors", "Data received - no errors"),
-  ("Data ready for analysis", "Data ready for analysis"),
+  "Requested",
+  "Requested - No Response",
+  "Received - Incomplete",
+  "Contesting",
+  "Processing",
+  "Analyzing",
 ];
 
 export const CONTACT_METHODS = ["Phone", "Email", "Fax", "Portal"];
