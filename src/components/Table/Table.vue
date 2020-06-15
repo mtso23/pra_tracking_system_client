@@ -1,12 +1,9 @@
 <template>
   <section>
-    <b-collapse :open="false" aria-id="contentIdForA11y1">
-      <button
-        class="button is-primary"
-        id="columnOptions"
-        slot="trigger"
-        aria-controls="contentIdForA11y1"
-      >Show/Hide Column Option</button>
+    <b-collapse class="columnOptions" :open="false">
+      <button class="button is-primary" id="columnOptions" slot="trigger">
+        Show/Hide Column Option
+      </button>
       <div id="toggleArea">
         <div class="checkboxes content">
           <h4 class="checkboxHeader">Initial information:</h4>
@@ -16,23 +13,23 @@
               :key="name"
               class="control"
             >
-              <b-checkbox v-model="VIEWABLE_COLUMNS['INITIAL_INFO'][name]">
-                {{
+              <b-checkbox v-model="VIEWABLE_COLUMNS['INITIAL_INFO'][name]">{{
                 COLUMNS_TO_LABELS[name]
-                }}
-              </b-checkbox>
+              }}</b-checkbox>
             </div>
           </div>
         </div>
         <div class="checkboxes content">
           <h4 class="checkboxHeader">Dates:</h4>
           <div class="checkboxDiv">
-            <div v-for="(state, name) in VIEWABLE_COLUMNS['DATES']" :key="name" class="control">
-              <b-checkbox v-model="VIEWABLE_COLUMNS['DATES'][name]">
-                {{
+            <div
+              v-for="(state, name) in VIEWABLE_COLUMNS['DATES']"
+              :key="name"
+              class="control"
+            >
+              <b-checkbox v-model="VIEWABLE_COLUMNS['DATES'][name]">{{
                 COLUMNS_TO_LABELS[name]
-                }}
-              </b-checkbox>
+              }}</b-checkbox>
             </div>
           </div>
         </div>
@@ -44,28 +41,51 @@
               :key="name"
               class="control"
             >
-              <b-checkbox v-model="VIEWABLE_COLUMNS['CURRENT_INFO'][name]">
-                {{
+              <b-checkbox v-model="VIEWABLE_COLUMNS['CURRENT_INFO'][name]">{{
                 COLUMNS_TO_LABELS[name]
-                }}
-              </b-checkbox>
+              }}</b-checkbox>
             </div>
           </div>
         </div>
         <div class="checkboxes content">
           <h4 class="checkboxHeader">Analysis:</h4>
           <div class="checkboxDiv">
-            <div v-for="(state, name) in VIEWABLE_COLUMNS['ANALYSIS']" :key="name" class="control">
-              <b-checkbox v-model="VIEWABLE_COLUMNS['ANALYSIS'][name]">
-                {{
+            <div
+              v-for="(state, name) in VIEWABLE_COLUMNS['ANALYSIS']"
+              :key="name"
+              class="control"
+            >
+              <b-checkbox v-model="VIEWABLE_COLUMNS['ANALYSIS'][name]">{{
                 COLUMNS_TO_LABELS[name]
-                }}
-              </b-checkbox>
+              }}</b-checkbox>
             </div>
           </div>
         </div>
       </div>
     </b-collapse>
+    <section class="tableInfo">
+      <!-- <span>
+        <b class="totalChecked">Total selected: {{ checkedRows.length }}</b>
+      </span> -->
+      <download-csv
+        class="download"
+        :data="prepareDataForExporting(data)"
+        :fields="FIELDS_TO_EXPORT"
+      >
+        <b-button type="is-primary" rounded>
+          Download all
+        </b-button>
+      </download-csv>
+      <download-csv
+        class="download"
+        :data="prepareDataForExporting(data)"
+        :fields="filterFieldsToExport(FIELDS_TO_EXPORT, VIEWABLE_COLUMNS)"
+      >
+        <b-button type="is-link" rounded outlined>
+          Download only visible columns
+        </b-button>
+      </download-csv>
+    </section>
     <b-table
       :data="data"
       :columns="columns"
@@ -90,11 +110,12 @@
             :to="{
               name: 'Form',
               params: {
-                initialData: data.find(el => el['id'] == props.row.id),
-                updating: true
-              }
+                initialData: data.find((el) => el['id'] == props.row.id),
+                updating: true,
+              },
             }"
-          >View</b-button>
+            >View</b-button
+          >
         </b-table-column>
         <b-table-column
           field="county"
@@ -136,9 +157,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.dateofrequest
-            ? new Date(props.row.dateofrequest).toLocaleDateString()
-            : ""
+              props.row.dateofrequest
+                ? new Date(props.row.dateofrequest).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -152,9 +173,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.startdaterequested
-            ? new Date(props.row.startdaterequested).toLocaleDateString()
-            : ""
+              props.row.startdaterequested
+                ? new Date(props.row.startdaterequested).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -168,9 +189,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.enddaterequested
-            ? new Date(props.row.enddaterequested).toLocaleDateString()
-            : ""
+              props.row.enddaterequested
+                ? new Date(props.row.enddaterequested).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -184,9 +205,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.startdatereturned
-            ? new Date(props.row.startdatereturned).toLocaleDateString()
-            : ""
+              props.row.startdatereturned
+                ? new Date(props.row.startdatereturned).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -200,9 +221,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.enddatereturned
-            ? new Date(props.row.enddatereturned).toLocaleDateString()
-            : ""
+              props.row.enddatereturned
+                ? new Date(props.row.enddatereturned).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -216,9 +237,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.dateoflastcontact
-            ? new Date(props.row.dateoflastcontact).toLocaleDateString()
-            : ""
+              props.row.dateoflastcontact
+                ? new Date(props.row.dateoflastcontact).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -228,7 +249,9 @@
           centered
           :visible="VIEWABLE_COLUMNS['CURRENT_INFO']['linktoprarequest']"
           sortable
-        ></b-table-column>
+        >
+          <span class="tag is-medium">{{ props.row.linktoprarequest }}</span>
+        </b-table-column>
         <b-table-column
           field="leadmember"
           label="Lead member"
@@ -247,7 +270,9 @@
           :visible="VIEWABLE_COLUMNS['INITIAL_INFO']['issheriffsdept']"
           sortable
         >
-          <span class="tag is-medium">{{ props.row.issheriffsdept ? "SD" : "PD" }}</span>
+          <span class="tag is-medium">
+            {{ props.row.issheriffsdept ? "SD" : "PD" }}
+          </span>
         </b-table-column>
         <b-table-column
           field="datatype"
@@ -269,9 +294,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.datereceived
-            ? new Date(props.row.datereceived).toLocaleDateString()
-            : ""
+              props.row.datereceived
+                ? new Date(props.row.datereceived).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -346,10 +371,6 @@
           <span class="tag is-medium">{{ props.row.dataanalyzed }}</span>
         </b-table-column>
       </template>
-
-      <template slot="bottom-left">
-        <b id="totalchecked">Total checked: {{ checkedRows.length }}</b>
-      </template>
     </b-table>
   </section>
 </template>
@@ -358,11 +379,16 @@
 // CONTINUE WITH:
 // change this.columns to work with columns to labels being an object instead of an array
 import axios from "axios";
+import JsonCSV from "vue-json-csv";
+
 import {
   COLUMNS_TO_LABELS,
   VIEWABLE_COLUMNS,
-  SEARCHABLE_COLUMNS
-} from "../definitions.js";
+  SEARCHABLE_COLUMNS,
+  FIELDS_TO_EXPORT,
+} from "../../definitions.js";
+
+import { prepareDataForExporting, filterFieldsToExport } from "./csvExport.js";
 
 export default {
   data() {
@@ -372,13 +398,16 @@ export default {
       checkedRows: [],
       currentPage: 1,
       VIEWABLE_COLUMNS,
-      COLUMNS_TO_LABELS
+      COLUMNS_TO_LABELS,
+      FIELDS_TO_EXPORT,
+      prepareDataForExporting,
+      filterFieldsToExport,
     };
   },
   mounted() {
     axios
       .get("https://pra-tracking-dev.herokuapp.com/api/pra?fields=all")
-      .then(response => (this.data = response.data));
+      .then((response) => (this.data = response.data));
   },
   methods: {
     dateOfRequestSort(a, b, isAsc) {
@@ -429,22 +458,18 @@ export default {
             new Date(a.dateoflastcontact).getTime()
         : new Date(a.dateoflastcontact).getTime() -
             new Date(b.dateoflastcontact).getTime();
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style>
 .checkboxes {
-  /* width: 80%; */
+  width: 100%;
   margin: 0.25em auto;
   /* justify-content: space-between;
   display: grid;
   grid-template-columns: 1fr; */
-}
-
-#totalchecked {
-  margin-left: 3em;
 }
 
 #columnOptions {
@@ -464,5 +489,27 @@ nav {
 .checkboxDiv {
   display: block;
   /* clear: both; */
+}
+
+.columnOptions {
+  /* display: flex;
+  justify-content: space-evenly; */
+  /* justify-content: center; */
+  /* align-content: center;  */
+  padding: 0 3em;
+}
+
+.download {
+  margin-left: 3em;
+}
+
+.tableInfo {
+  display: flex;
+  align-items: center;
+  padding: 1em;
+}
+
+.totalChecked {
+  margin-left: 3em;
 }
 </style>

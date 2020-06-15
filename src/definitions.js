@@ -34,6 +34,7 @@ export const VIEWABLE_COLUMNS = {
   },
 };
 
+// Columns that can be searched in table; written as set for fast lookup speed vs array
 export const SEARCHABLE_COLUMNS = new Set([
   "county",
   "lea",
@@ -41,36 +42,66 @@ export const SEARCHABLE_COLUMNS = new Set([
   "currentstatus",
 ]);
 
-const ALL = [
-  { comments: "Comments" },
-  { county: "County" },
-  { currentcontact: "Current contact" }, // name, method, info
-  { currentstatus: "Status" },
-  { dataactionable: "Date actionable?" },
-  { dateanalyzed: "Data analyzed?" },
-  { datacleaned: "Data cleaned?" },
-  { datageocoded: "Data geocoded?" },
-  { dataqualitychecked: "Data quality checked?" },
-  { datatype: "Data type" },
-  { dateoflastcontact: "Date of last contact" },
+// Array: each entry is an object mapping db field name to proper label
+// Ordered by order they appear in the form (logical ordering of interest
+export const ALL = [
   { dateofrequest: "Date of request" },
-  { datereceived: "Date received" },
-  { enddaterequested: "End date requested" },
-  { enddatereturned: "End date returned" },
-  { initialcontact: "Initial contact" }, // name, method, info
-  { issheriffsdept: "Is sheriffs dept.?" },
+  { county: "County" },
   { lea: "LEA" },
-  { leadmember: "Lead member" },
-  { linktoprarequest: "Link to PRA request" },
+  { issheriffsdept: "Is sheriffs dept.?" },
+  { datatype: "Data type" },
+  { initialcontact: "Initial contact" }, // name, method, info
   { startdaterequested: "Start date requested" },
+  { enddaterequested: "End date requested" },
   { startdatereturned: "Start date returned" },
-  { updates: "Updates" }, // each entry is stored with key as timestamp and value as the note
+  { enddatereturned: "End date returned" },
   { variables: "Variables" }, // each entry is stored with variable name as key, and then two subkeys:
   // the subkeys are requested (bool as value) and received (bool as value)
+  { dateoflastcontact: "Date of last contact" },
+  { currentstatus: "Status" },
+  { leadmember: "Lead member" },
+  { currentcontact: "Current contact" }, // name, method, info
+  { datereceived: "Date received" },
   { variableschecked: "Variables checked?" },
   { variablescomplete: "Variables complete?" },
+  { dataqualitychecked: "Data quality checked?" },
+  { dataactionable: "Date actionable?" },
+  { datacleaned: "Data cleaned?" },
+  { datageocoded: "Data geocoded?" },
+  { dateanalyzed: "Data analyzed?" },
+  { linktoprarequest: "Link to PRA request" },
+  { updates: "Updates" }, // each entry is stored with key as timestamp and value as the note
+  { comments: "Comments" },
 ];
 
+// Fields to export for csv
+// exclues: variables, comments, updates, linktoprarequest
+export const FIELDS_TO_EXPORT = [
+  "dateofrequest",
+  "county",
+  "lea",
+  "issheriffsdept",
+  "datatype",
+  "initialcontact",
+  "startdaterequested",
+  "enddaterequested",
+  "startdatereturned",
+  "enddatereturned",
+  "dateoflastcontact",
+  "currentstatus",
+  "leadmember",
+  "currentcontact",
+  "datereceived",
+  "variableschecked",
+  "variablescomplete",
+  "dataqualitychecked",
+  "dataactionable",
+  "datacleaned",
+  "datageocoded",
+  "dateanalyzed",
+];
+
+// Map of db field names to column labels for table
 export const COLUMNS_TO_LABELS = {
   county: "County",
   lea: "LEA",
@@ -95,6 +126,7 @@ export const COLUMNS_TO_LABELS = {
   dataanalyzed: "Analyzed",
 };
 
+// The available statuses for a PRA that show up under select option for 'Status'
 export const STATUSES = [
   "Requested",
   "Requested - No Response",
@@ -104,8 +136,11 @@ export const STATUSES = [
   "Analyzing",
 ];
 
+// The available contact methods for contacts
 export const CONTACT_METHODS = ["Phone", "Email", "Fax", "Portal"];
 
+// Variables that we track for each PRA
+// if false, then in the 'Variables' section of a new form, it will be unchecked
 export const INITIAL_VARIABLES = {
   ARREST_ADD: {
     requested: false,
