@@ -10,8 +10,9 @@
 
 <script>
 import Header from "./Header.vue";
-import Table from "./Table.vue";
+import Table from "./Table/Table.vue";
 import Login from "./Login.vue";
+
 import { ACCESS_CONTROL } from "../definitions.js";
 
 export default {
