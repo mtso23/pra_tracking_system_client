@@ -1,18 +1,19 @@
 <template>
   <div id="header">
-    <img id="logo" width="225" src="../assets/logo.png" />
-    <Navbar id="navbar" />
+    <img id="logo" width="225" src="../../assets/logo.png" />
+    <b-navbar id="navbar">
+      <template slot="start">
+        <b-navbar-item href="#/">Home</b-navbar-item>
+        <b-navbar-item href="#/form">Create</b-navbar-item>
+        <b-navbar-item href="/">Logout</b-navbar-item>
+      </template>
+    </b-navbar>
   </div>
 </template>
 
 <script>
-import Navbar from "./Navbar.vue";
-
 export default {
   name: "Header",
-  components: {
-    Navbar
-  }
 };
 </script>
 

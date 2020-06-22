@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <div>
     <b-collapse class="columnOptions" :open="false">
       <button class="button is-primary" id="columnOptions" slot="trigger">
         Show/Hide Column Option
@@ -13,9 +13,9 @@
               :key="name"
               class="control"
             >
-              <b-checkbox v-model="VIEWABLE_COLUMNS['INITIAL_INFO'][name]">{{
-                COLUMNS_TO_LABELS[name]
-              }}</b-checkbox>
+              <b-checkbox v-model="VIEWABLE_COLUMNS['INITIAL_INFO'][name]">
+                {{ COLUMNS_TO_LABELS[name] }}
+              </b-checkbox>
             </div>
           </div>
         </div>
@@ -27,9 +27,9 @@
               :key="name"
               class="control"
             >
-              <b-checkbox v-model="VIEWABLE_COLUMNS['DATES'][name]">{{
-                COLUMNS_TO_LABELS[name]
-              }}</b-checkbox>
+              <b-checkbox v-model="VIEWABLE_COLUMNS['DATES'][name]">
+                {{ COLUMNS_TO_LABELS[name] }}
+              </b-checkbox>
             </div>
           </div>
         </div>
@@ -41,9 +41,9 @@
               :key="name"
               class="control"
             >
-              <b-checkbox v-model="VIEWABLE_COLUMNS['CURRENT_INFO'][name]">{{
-                COLUMNS_TO_LABELS[name]
-              }}</b-checkbox>
+              <b-checkbox v-model="VIEWABLE_COLUMNS['CURRENT_INFO'][name]">
+                {{ COLUMNS_TO_LABELS[name] }}
+              </b-checkbox>
             </div>
           </div>
         </div>
@@ -55,9 +55,9 @@
               :key="name"
               class="control"
             >
-              <b-checkbox v-model="VIEWABLE_COLUMNS['ANALYSIS'][name]">{{
-                COLUMNS_TO_LABELS[name]
-              }}</b-checkbox>
+              <b-checkbox v-model="VIEWABLE_COLUMNS['ANALYSIS'][name]">
+                {{ COLUMNS_TO_LABELS[name] }}
+              </b-checkbox>
             </div>
           </div>
         </div>
@@ -66,24 +66,22 @@
     <section class="tableInfo">
       <!-- <span>
         <b class="totalChecked">Total selected: {{ checkedRows.length }}</b>
-      </span> -->
+      </span>-->
       <download-csv
         class="download"
         :data="prepareDataForExporting(data)"
         :fields="FIELDS_TO_EXPORT"
       >
-        <b-button type="is-primary" rounded>
-          Download all
-        </b-button>
+        <b-button type="is-primary" rounded>Download all</b-button>
       </download-csv>
       <download-csv
         class="download"
         :data="prepareDataForExporting(data)"
         :fields="filterFieldsToExport(FIELDS_TO_EXPORT, VIEWABLE_COLUMNS)"
       >
-        <b-button type="is-link" rounded outlined>
-          Download only visible columns
-        </b-button>
+        <b-button type="is-link" rounded outlined
+          >Download only visible columns</b-button
+        >
       </download-csv>
     </section>
     <b-table
@@ -153,7 +151,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['INITIAL_INFO']['dateofrequest']"
           sortable
-          :custom-sort="dateOfRequestSort"
+          :custom-sort="dateSort('dateofrequest')"
         >
           <span class="tag is-medium">
             {{
@@ -169,7 +167,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['DATES']['startdaterequested']"
           sortable
-          :custom-sort="startDateRequestedSort"
+          :custom-sort="dateSort('startdaterequested')"
         >
           <span class="tag is-medium">
             {{
@@ -185,7 +183,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['DATES']['enddaterequested']"
           sortable
-          :custom-sort="endDateRequestedSort"
+          :custom-sort="dateSort('enddaterequested')"
         >
           <span class="tag is-medium">
             {{
@@ -201,7 +199,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['DATES']['startdatereturned']"
           sortable
-          :custom-sort="startDateReturnedSort"
+          :custom-sort="dateSort('startdatereturned')"
         >
           <span class="tag is-medium">
             {{
@@ -217,7 +215,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['DATES']['enddatereturned']"
           sortable
-          :custom-sort="endDateReturnedSort"
+          :custom-sort="dateSort('enddatereturned')"
         >
           <span class="tag is-medium">
             {{
@@ -233,7 +231,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['CURRENT_INFO']['dateoflastcontact']"
           sortable
-          :custom-sort="dateOfLastContactSort"
+          :custom-sort="dateSort('dateoflastcontact')"
         >
           <span class="tag is-medium">
             {{
@@ -270,9 +268,9 @@
           :visible="VIEWABLE_COLUMNS['INITIAL_INFO']['issheriffsdept']"
           sortable
         >
-          <span class="tag is-medium">
-            {{ props.row.issheriffsdept ? "SD" : "PD" }}
-          </span>
+          <span class="tag is-medium">{{
+            props.row.issheriffsdept ? "SD" : "PD"
+          }}</span>
         </b-table-column>
         <b-table-column
           field="datatype"
@@ -290,7 +288,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['ANALYSIS']['datereceived']"
           sortable
-          :custom-sort="dateReceivedSort"
+          :custom-sort="dateSort('datereceived')"
         >
           <span class="tag is-medium">
             {{
@@ -372,12 +370,10 @@
         </b-table-column>
       </template>
     </b-table>
-  </section>
+  </div>
 </template>
 
 <script>
-// CONTINUE WITH:
-// change this.columns to work with columns to labels being an object instead of an array
 import axios from "axios";
 import JsonCSV from "vue-json-csv";
 
@@ -391,6 +387,7 @@ import {
 import { prepareDataForExporting, filterFieldsToExport } from "./csvExport.js";
 
 export default {
+  name: "Table",
   data() {
     return {
       data: [],
@@ -410,54 +407,14 @@ export default {
       .then((response) => (this.data = response.data));
   },
   methods: {
-    dateOfRequestSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.dateofrequest).getTime() -
-            new Date(a.dateofrequest).getTime()
-        : new Date(a.dateofrequest).getTime() -
-            new Date(b.dateofrequest).getTime();
-    },
-    dateReceivedSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.datereceived).getTime() -
-            new Date(a.datereceived).getTime()
-        : new Date(a.datereceived).getTime() -
-            new Date(b.datereceived).getTime();
-    },
-    startDateRequestedSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.startdaterequested).getTime() -
-            new Date(a.startdaterequested).getTime()
-        : new Date(a.startdaterequested).getTime() -
-            new Date(b.startdaterequested).getTime();
-    },
-    endDateRequestedSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.enddaterequested).getTime() -
-            new Date(a.enddaterequested).getTime()
-        : new Date(a.enddaterequested).getTime() -
-            new Date(b.enddaterequested).getTime();
-    },
-    startDateReturnedSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.startdatereturned).getTime() -
-            new Date(a.startdatereturned).getTime()
-        : new Date(a.startdatereturned).getTime() -
-            new Date(b.startdatereturned).getTime();
-    },
-    endDateReturnedSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.enddatereturned).getTime() -
-            new Date(a.enddatereturned).getTime()
-        : new Date(a.enddatereturned).getTime() -
-            new Date(b.enddatereturned).getTime();
-    },
-    dateOfLastContactSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.dateoflastcontact).getTime() -
-            new Date(a.dateoflastcontact).getTime()
-        : new Date(a.dateoflastcontact).getTime() -
-            new Date(b.dateoflastcontact).getTime();
+    // Used to sort dates in the table. First pass in the field name,
+    //   which returns the function to sort that field.
+    dateSort(field) {
+      return function(a, b, isAsc) {
+        return isAsc
+          ? new Date(b[field]).getTime() - new Date(a[field]).getTime()
+          : new Date(a[field]).getTime() - new Date(b[field]).getTime();
+      };
     },
   },
 };
@@ -467,9 +424,6 @@ export default {
 .checkboxes {
   width: 100%;
   margin: 0.25em auto;
-  /* justify-content: space-between;
-  display: grid;
-  grid-template-columns: 1fr; */
 }
 
 #columnOptions {
@@ -488,14 +442,9 @@ nav {
 
 .checkboxDiv {
   display: block;
-  /* clear: both; */
 }
 
 .columnOptions {
-  /* display: flex;
-  justify-content: space-evenly; */
-  /* justify-content: center; */
-  /* align-content: center;  */
   padding: 0 3em;
 }
 

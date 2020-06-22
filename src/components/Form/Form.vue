@@ -7,7 +7,8 @@
         class="progress is-small is-success"
         :value="progress"
         max="100"
-      >15%</progress>
+        >15%</progress
+      >
     </section>
     <section id="form">
       <section class="formSection" id="initialData">
@@ -24,7 +25,11 @@
               icon="calendar-today"
             ></b-datepicker>
           </b-field>
-          <b-field expanded label="County" :type="{ 'is-success': data.county }">
+          <b-field
+            expanded
+            label="County"
+            :type="{ 'is-success': data.county }"
+          >
             <b-input type="text" v-model="data.county"></b-input>
           </b-field>
 
@@ -32,12 +37,17 @@
             <b-input v-model="data.lea"></b-input>
           </b-field>
           <b-field label="Sheriff's deptartment?">
-            <b-checkbox v-model="data.issheriffsdept" id="sheriffsCheckbox"></b-checkbox>
+            <b-checkbox
+              v-model="data.issheriffsdept"
+              id="sheriffsCheckbox"
+            ></b-checkbox>
           </b-field>
           <b-field label="Data type">
             <b-select placeholder="Select data type" v-model="data.datatype">
               <option value="Arrests">Arrests</option>
-              <option v-if="!updating" value="Bookings">Bookings (also creates Arrests entry)</option>
+              <option v-if="!updating" value="Bookings"
+                >Bookings (also creates Arrests entry)</option
+              >
               <option v-if="updating" value="Bookings">Bookings</option>
             </b-select>
           </b-field>
@@ -49,22 +59,48 @@
             label="Initial contact name"
             :type="{ 'is-success': data.initialcontact.name }"
           >
-            <b-input placeholder="Name" v-model="data.initialcontact.name"></b-input>
+            <b-input
+              placeholder="Name"
+              v-model="data.initialcontact.name"
+            ></b-input>
           </b-field>
-          <b-field label="Method" :type="{ 'is-success': data.initialcontact.method }">
-            <b-select placeholder="Select a method" required v-model="data.initialcontact.method">
-              <option v-for="method in CONTACT_METHODS" :key="method" :value="method">{{ method }}</option>
+          <b-field
+            label="Method"
+            :type="{ 'is-success': data.initialcontact.method }"
+          >
+            <b-select
+              placeholder="Select a method"
+              required
+              v-model="data.initialcontact.method"
+            >
+              <option
+                v-for="method in CONTACT_METHODS"
+                :key="method"
+                :value="method"
+                >{{ method }}</option
+              >
             </b-select>
           </b-field>
-          <b-field expanded label="Info" :type="{ 'is-success': data.initialcontact.info }">
-            <b-input placeholder="Contact info" v-model="data.initialcontact.info"></b-input>
+          <b-field
+            expanded
+            label="Info"
+            :type="{ 'is-success': data.initialcontact.info }"
+          >
+            <b-input
+              placeholder="Contact info"
+              v-model="data.initialcontact.info"
+            ></b-input>
           </b-field>
         </b-field>
         <b-field expanded label="Link to PRA Request">
           <b-input type="text" v-model="data.linktoprarequest"></b-input>
         </b-field>
         <b-field label="Comments">
-          <b-input maxlength="2000" v-model="data.comments" type="textarea"></b-input>
+          <b-input
+            maxlength="2000"
+            v-model="data.comments"
+            type="textarea"
+          ></b-input>
         </b-field>
       </section>
       <section class="formSection">
@@ -129,20 +165,35 @@
           <b-field>
             <b-input v-model="newVariable"></b-input>
           </b-field>
-          <b-button v-on:click="addVariable" type="is-primary">Add variable</b-button>
+          <b-button v-on:click="addVariable" type="is-primary"
+            >Add variable</b-button
+          >
         </b-field>
 
         <div id="variables" :key="variablesKey">
-          <div v-for="column in variableColumns" :key="column[0]" class="variableColumn">
+          <div
+            v-for="column in variableColumns"
+            :key="column[0]"
+            class="variableColumn"
+          >
             <div class="variableInfoHeader">
               <div></div>
               <h6 class="alignTextLeft">Req.</h6>
               <h6 class="alignTextLeft">Rec.</h6>
             </div>
-            <div v-for="variable in column" :key="variable" class="variableInfo">
+            <div
+              v-for="variable in column"
+              :key="variable"
+              class="variableInfo"
+            >
               <span class="alignTextLeft">{{ variable }}</span>
-              <b-switch v-model="data.variables[variable]['requested']"></b-switch>
-              <b-switch type="is-success" v-model="data.variables[variable]['received']"></b-switch>
+              <b-switch
+                v-model="data.variables[variable]['requested']"
+              ></b-switch>
+              <b-switch
+                type="is-success"
+                v-model="data.variables[variable]['received']"
+              ></b-switch>
               <div class="buttons">
                 <b-button
                   type="is-danger"
@@ -176,17 +227,33 @@
             ></b-datepicker>
           </b-field>
 
-          <b-field label="Previous status" :type="{ 'is-success': data.currentstatus }">
-            <b-tag type="text" size="is-medium">{{data.currentstatus}}</b-tag>
+          <b-field
+            label="Previous status"
+            :type="{ 'is-success': data.currentstatus }"
+          >
+            <b-tag type="text" size="is-medium">{{ data.currentstatus }}</b-tag>
           </b-field>
 
           <b-field label="Status" :type="{ 'is-success': data.currentstatus }">
-            <b-select placeholder="Select a status" required v-model="data.currentstatus">
-              <option v-for="status in STATUSES" :key="status" :value="status">{{ status }}</option>
+            <b-select
+              placeholder="Select a status"
+              required
+              v-model="data.currentstatus"
+            >
+              <option
+                v-for="status in STATUSES"
+                :key="status"
+                :value="status"
+                >{{ status }}</option
+              >
             </b-select>
           </b-field>
 
-          <b-field expanded label="Lead member" :type="{ 'is-success': data.leadmember }">
+          <b-field
+            expanded
+            label="Lead member"
+            :type="{ 'is-success': data.leadmember }"
+          >
             <b-input type="text" v-model="data.leadmember"></b-input>
           </b-field>
         </b-field>
@@ -196,15 +263,37 @@
             label="Current contact name"
             :type="{ 'is-success': data.currentcontact.name }"
           >
-            <b-input placeholder="Name" v-model="data.currentcontact.name"></b-input>
+            <b-input
+              placeholder="Name"
+              v-model="data.currentcontact.name"
+            ></b-input>
           </b-field>
-          <b-field label="Method" :type="{ 'is-success': data.currentcontact.method }">
-            <b-select placeholder="Select a method" required v-model="data.currentcontact.method">
-              <option v-for="method in CONTACT_METHODS" :key="method" :value="method">{{ method }}</option>
+          <b-field
+            label="Method"
+            :type="{ 'is-success': data.currentcontact.method }"
+          >
+            <b-select
+              placeholder="Select a method"
+              required
+              v-model="data.currentcontact.method"
+            >
+              <option
+                v-for="method in CONTACT_METHODS"
+                :key="method"
+                :value="method"
+                >{{ method }}</option
+              >
             </b-select>
           </b-field>
-          <b-field expanded label="Info" :type="{ 'is-success': data.currentcontact.info }">
-            <b-input placeholder="Contact info" v-model="data.currentcontact.info"></b-input>
+          <b-field
+            expanded
+            label="Info"
+            :type="{ 'is-success': data.currentcontact.info }"
+          >
+            <b-input
+              placeholder="Contact info"
+              v-model="data.currentcontact.info"
+            ></b-input>
           </b-field>
         </b-field>
       </section>
@@ -252,7 +341,9 @@
           <b-field expanded>
             <b-input v-model="currentUpdate"></b-input>
           </b-field>
-          <b-button v-on:click="submitUpdate" type="is-primary">Add update</b-button>
+          <b-button v-on:click="submitUpdate" type="is-primary"
+            >Add update</b-button
+          >
         </b-field>
         <b-table :data="data.updates" :columns="updatesColumns"></b-table>
       </section>
@@ -264,7 +355,8 @@
             id="createButton"
             v-on:click="createPRA"
             type="is-success"
-          >Create</b-button>
+            >Create</b-button
+          >
         </div>
         <div v-if="updating">
           <b-button
@@ -273,7 +365,8 @@
             id="createButton"
             v-on:click="updatePRA"
             type="is-success"
-          >Update</b-button>
+            >Update</b-button
+          >
           <span id="space" />
           <b-button
             rounded
@@ -281,7 +374,8 @@
             id="deleteButton"
             v-on:click="confirmDeletePRA"
             type="is-danger"
-          >Delete</b-button>
+            >Delete</b-button
+          >
         </div>
       </section>
       <b-button
@@ -291,7 +385,8 @@
         v-on:click="confirmCancelPRA"
         type="is-primary"
         outlined
-      >Cancel</b-button>
+        >Cancel</b-button
+      >
     </section>
   </section>
 </template>
@@ -301,30 +396,30 @@ import {
   STATUSES,
   CONTACT_METHODS,
   INITIAL_VARIABLES,
-  ACCESS_CONTROL
-} from "../definitions.js";
-import Header from "./Header.vue";
+  ACCESS_CONTROL,
+} from "../../definitions.js";
+import Header from "../Header/Header";
 import axios from "axios";
 import cloneDeep from "lodash";
 
 export default {
   name: "Form",
   components: {
-    Header
+    Header,
   },
   props: {
     initialData: {
       type: Object,
       default: function() {
         return {};
-      }
+      },
     },
     updating: {
       type: Boolean,
       default: function() {
         return false;
-      }
-    }
+      },
+    },
   },
   data: function() {
     return {
@@ -334,13 +429,13 @@ export default {
       TEMP_INITIAL_VARIABLES: JSON.parse(JSON.stringify(INITIAL_VARIABLES)),
       updatesColumns: [
         { field: "date", label: "Date", width: "200" },
-        { field: "note", label: "Note" }
+        { field: "note", label: "Note" },
       ],
       currentUpdate: "",
       newVariable: "",
       variablesKey: 0,
       editable: false,
-      ACCESS_CONTROL
+      ACCESS_CONTROL,
     };
   },
   created: function() {
@@ -357,7 +452,7 @@ export default {
   computed: {
     progress: function() {
       const numValidKeys = Object.keys(this.data).filter(
-        element => this.data[element] != null
+        (element) => this.data[element] != null
       ).length;
       const numExtraFields = 4;
       return ((numValidKeys - numExtraFields) / 18) * 100;
@@ -369,11 +464,11 @@ export default {
       const variableColumns = [
         variableKeys.slice(0, variablesPerColumn),
         variableKeys.slice(variablesPerColumn, 2 * variablesPerColumn),
-        variableKeys.slice(2 * variablesPerColumn, numVariables) //3 * variablesPerColumn),
+        variableKeys.slice(2 * variablesPerColumn, numVariables), //3 * variablesPerColumn),
         //variableKeys.slice(3 * variablesPerColumn, numVariables)
       ];
       return variableColumns;
-    }
+    },
     // numIncompleteVariables: function() {
     //   return Object.keys(this.data.variables).filter(
     //     element =>
@@ -471,7 +566,7 @@ export default {
       if (this.currentUpdate != "") {
         this.data.updates.push({
           date: new Date().toLocaleString("en-US"),
-          note: this.currentUpdate
+          note: this.currentUpdate,
         });
         this.currentUpdate = "";
       }
@@ -483,7 +578,7 @@ export default {
       ) {
         this.$set(this.data.variables, this.newVariable, {
           requested: false,
-          received: false
+          received: false,
         });
         this.newVariable = "";
       }
@@ -500,7 +595,7 @@ export default {
           "https://pra-tracking-dev.herokuapp.com/api/pra",
           JSON.stringify(this.data),
           {
-            headers: { "Content-type": "application/json" }
+            headers: { "Content-type": "application/json" },
           }
         )
         .then(function(response) {
@@ -513,7 +608,7 @@ export default {
                   "https://pra-tracking-dev.herokuapp.com/api/pra",
                   JSON.stringify(vm.data),
                   {
-                    headers: { "Content-type": "application/json" }
+                    headers: { "Content-type": "application/json" },
                   }
                 )
                 .then(function(response) {
@@ -523,7 +618,7 @@ export default {
                         "Created two entries for Sheriff's Department – bookings and arrests",
                       type: "is-success",
                       duration: 5000,
-                      position: "is-bottom"
+                      position: "is-bottom",
                     });
                     vm.$router.push({ name: "Home" });
                   } else {
@@ -541,7 +636,7 @@ export default {
               message: "Successfully created",
               type: "is-success",
               duration: 5000,
-              position: "is-bottom"
+              position: "is-bottom",
             });
             vm.$router.push({ name: "Home" });
           } else {
@@ -561,7 +656,7 @@ export default {
           `https://pra-tracking-dev.herokuapp.com/api/pra/${vm.data.id}`,
           JSON.stringify(this.data),
           {
-            headers: { "Content-type": "application/json" }
+            headers: { "Content-type": "application/json" },
           }
         )
         .then(function(response) {
@@ -570,7 +665,7 @@ export default {
               message: "Successfully updated",
               type: "is-success",
               duration: 5000,
-              position: "is-bottom"
+              position: "is-bottom",
             });
           } else {
             vm.alertUpdateFailure();
@@ -590,7 +685,7 @@ export default {
         confirmText: "Delete",
         type: "is-danger",
         hasIcon: true,
-        onConfirm: () => this.deletePRA()
+        onConfirm: () => this.deletePRA(),
       });
     },
     deletePRA: function() {
@@ -603,7 +698,7 @@ export default {
               message: "Successfully deleted",
               type: "is-danger",
               duration: 5000,
-              position: "is-bottom"
+              position: "is-bottom",
             });
 
             vm.$router.push({ name: "Home" });
@@ -626,7 +721,7 @@ export default {
         cancelText: "No",
         type: "is-danger",
         hasIcon: true,
-        onConfirm: () => this.cancel()
+        onConfirm: () => this.cancel(),
       });
     },
     cancel: function() {
@@ -640,8 +735,8 @@ export default {
     },
     alertDeleteFailure() {
       this.$buefy.dialog.alert("Error deleting PRA request");
-    }
-  }
+    },
+  },
 };
 </script>
 

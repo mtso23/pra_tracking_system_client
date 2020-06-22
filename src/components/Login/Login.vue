@@ -1,28 +1,34 @@
 <template>
-  <section>
+  <div>
     <b-field label="Username">
       <b-input type="text" v-model="login_info['username']"></b-input>
     </b-field>
-
     <b-field label="Password">
-      <b-input type="password" v-model="login_info['password']" password-reveal></b-input>
+      <b-input
+        type="password"
+        v-model="login_info['password']"
+        password-reveal
+      ></b-input>
     </b-field>
-    <b-button rounded id="loginButton" v-on:click="login" type="is-success">Login</b-button>
-  </section>
+    <b-button rounded id="loginButton" v-on:click="login" type="is-success"
+      >Login</b-button
+    >
+  </div>
 </template>
 
 <script>
-import { ACCESS_CONTROL } from "../definitions.js";
+import { ACCESS_CONTROL } from "../../definitions.js";
 import axios from "axios";
 
 export default {
+  name: "Login",
   data() {
     return {
       login_info: {
         username: "",
-        password: ""
+        password: "",
       },
-      ACCESS_CONTROL
+      ACCESS_CONTROL,
     };
   },
   methods: {
@@ -33,7 +39,7 @@ export default {
           `https://pra-tracking-dev.herokuapp.com/api/login`,
           JSON.stringify(vm.login_info),
           {
-            headers: { "Content-type": "application/json" }
+            headers: { "Content-type": "application/json" },
           }
         )
         .then(function(response) {
@@ -42,7 +48,7 @@ export default {
               message: "Successfully logged in",
               type: "is-success",
               duration: 5000,
-              position: "is-bottom"
+              position: "is-bottom",
             });
             ACCESS_CONTROL["access"] = response.data.access;
           } else {
@@ -50,8 +56,6 @@ export default {
           }
         })
         .catch(function(error) {
-          console.log(error);
-
           vm.alertLoginFailure();
         });
     },
@@ -60,9 +64,9 @@ export default {
         message: "Incorrect login information",
         type: "is-danger",
         duration: 5000,
-        position: "is-bottom"
+        position: "is-bottom",
       });
-    }
-  }
+    },
+  },
 };
 </script>

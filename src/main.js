@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import App from "./App.vue";
-import Form from "./components/Form.vue";
-import Home from "./components/Home.vue";
+import Home from "./components/Home";
+import Form from "./components/Form/Form";
 import Buefy from "buefy";
 import JsonCSV from "vue-json-csv";
 import "buefy/dist/buefy.css";
@@ -22,7 +22,6 @@ const routes = [
 ];
 
 const router = new VueRouter({ routes });
-// router.replace({ path: "*", redirect: "/" });
 
 new Vue({
   render: (h) => h(App),

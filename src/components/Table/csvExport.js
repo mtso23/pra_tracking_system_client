@@ -1,5 +1,4 @@
 import moment from "moment";
-import { VIEWABLE_COLUMNS } from "../../definitions";
 
 // Converts an object to a string with each key/value on a newline
 const objectToString = (obj) => {
