@@ -1,7 +1,7 @@
 <template>
-  <div id="header">
-    <img id="logo" width="225" src="../../assets/logo.png" />
-    <b-navbar id="navbar">
+  <div class="Header">
+    <img class="Header--Logo" width="225" src="../../assets/logo.png" />
+    <b-navbar>
       <template slot="start">
         <b-navbar-item href="#/">Home</b-navbar-item>
         <b-navbar-item href="#/form">Create</b-navbar-item>
@@ -13,28 +13,20 @@
 
 <script>
 export default {
-  name: "Header",
+  name: "Header"
 };
 </script>
 
 <style>
-#header {
-  display: grid;
-
-  grid-template-columns: 0.7fr 1fr 0.1fr;
-  grid-template-rows: auto;
-  grid-template-areas: "logo navbar";
-
+.Header {
+  align-items: center;
+  display: flex;
   justify-content: center;
-  align-content: center;
+  padding-left: 3rem;
+  padding-right: 5rem;
 }
 
-#logo {
-  grid-area: logo;
-}
-
-#navbar {
-  grid-area: navbar;
-  justify-self: end;
+.Header--Logo {
+  margin-right: auto;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <div id="home">
-    <Header id="header" />
-    <Table id="table" />
+  <div id="Home">
+    <Header class="Home--Header" />
+    <Table class="Home--Table" />
   </div>
 </template>
 
@@ -10,46 +10,27 @@ import Header from "./Header/Header";
 import Table from "./Table/Table";
 
 export default {
-  name: "app",
+  name: "Home",
   components: {
     Header,
-    Table,
-  },
+    Table
+  }
 };
 </script>
 
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  text-align: center;
-  color: #2c3e50;
-
+.Home {
   display: grid;
-
+  grid-template-areas: "header" "table";
   grid-template-columns: 1fr;
   grid-template-rows: auto;
-  grid-template-areas: "header" "table";
 }
 
-#login {
-  top: 0;
-  left: 0;
-  position: absolute;
-  margin: auto;
-  bottom: 0;
-  right: 0;
-  width: 30%;
-  height: 30%;
-}
-
-#header {
+.Home--Header {
   grid-area: header;
 }
 
-#table {
+.Home--Table {
   grid-area: table;
 }
 </style>
