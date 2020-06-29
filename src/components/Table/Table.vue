@@ -1,10 +1,10 @@
 <template>
-  <section>
+  <div>
     <b-collapse class="columnOptions" :open="false">
-      <button class="button is-primary" id="columnOptions" slot="trigger">
+      <button class="button is-primary" slot="trigger">
         Show/Hide Column Option
       </button>
-      <div id="toggleArea">
+      <div class="toggleArea">
         <div class="checkboxes content">
           <h4 class="checkboxHeader">Initial information:</h4>
           <div class="checkboxDiv">
@@ -66,44 +66,46 @@
     <section class="tableInfo">
       <!-- <span>
         <b class="totalChecked">Total selected: {{ checkedRows.length }}</b>
-      </span> -->
+      </span>-->
       <download-csv
         class="download"
         :data="prepareDataForExporting(data)"
         :fields="FIELDS_TO_EXPORT"
+        :name="'data_all_' + new Date().toLocaleDateString()"
       >
-        <b-button type="is-primary" rounded>
-          Download all
-        </b-button>
+        <b-button type="is-primary" rounded>Download all as CSV</b-button>
       </download-csv>
       <download-csv
         class="download"
         :data="prepareDataForExporting(data)"
         :fields="filterFieldsToExport(FIELDS_TO_EXPORT, VIEWABLE_COLUMNS)"
+        :name="'data_filtered_' + new Date().toLocaleDateString()"
       >
-        <b-button type="is-link" rounded outlined>
-          Download only visible columns
-        </b-button>
+        <b-button type="is-link" rounded outlined
+          >Download only visible columns as CSV</b-button
+        >
       </download-csv>
     </section>
     <b-table
+      class="table"
       :data="data"
-      :columns="columns"
-      :checked-rows.sync="checkedRows"
-      checkbox-position="left"
-      checkable
       hoverable
       paginated
       :current-page.sync="currentPage"
       paginationPosition="bottom"
       per-page="25"
       default-sort-direction="asc"
-      default-sort="county"
+      default-sort="lea"
     >
       <template slot-scope="props">
-        <b-table-column centered>
+        <b-table-column
+          centered
+          custom-key="View"
+          field="id"
+          label="View"
+          visible
+        >
           <b-button
-            field="id"
             type="is-primary"
             outlined
             tag="router-link"
@@ -120,8 +122,8 @@
         <b-table-column
           field="county"
           label="County"
-          searchable
           centered
+          searchable
           sortable
           :visible="VIEWABLE_COLUMNS['INITIAL_INFO']['county']"
         >
@@ -153,7 +155,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['INITIAL_INFO']['dateofrequest']"
           sortable
-          :custom-sort="dateOfRequestSort"
+          :custom-sort="dateSort('dateofrequest')"
         >
           <span class="tag is-medium">
             {{
@@ -169,7 +171,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['DATES']['startdaterequested']"
           sortable
-          :custom-sort="startDateRequestedSort"
+          :custom-sort="dateSort('startdaterequested')"
         >
           <span class="tag is-medium">
             {{
@@ -185,7 +187,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['DATES']['enddaterequested']"
           sortable
-          :custom-sort="endDateRequestedSort"
+          :custom-sort="dateSort('enddaterequested')"
         >
           <span class="tag is-medium">
             {{
@@ -201,7 +203,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['DATES']['startdatereturned']"
           sortable
-          :custom-sort="startDateReturnedSort"
+          :custom-sort="dateSort('startdatereturned')"
         >
           <span class="tag is-medium">
             {{
@@ -217,7 +219,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['DATES']['enddatereturned']"
           sortable
-          :custom-sort="endDateReturnedSort"
+          :custom-sort="dateSort('enddatereturned')"
         >
           <span class="tag is-medium">
             {{
@@ -233,7 +235,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['CURRENT_INFO']['dateoflastcontact']"
           sortable
-          :custom-sort="dateOfLastContactSort"
+          :custom-sort="dateSort('dateoflastcontact')"
         >
           <span class="tag is-medium">
             {{
@@ -245,12 +247,23 @@
         </b-table-column>
         <b-table-column
           field="linktoprarequest"
-          label="Link to PRA Request"
+          label="Link to request"
           centered
           :visible="VIEWABLE_COLUMNS['CURRENT_INFO']['linktoprarequest']"
+        >
+          <a :href="'//' + props.row.linktoprarequest" target="_blank">
+            <img alt="link" src="../../assets/link_icon.svg" width="24" />
+          </a>
+        </b-table-column>
+        <b-table-column
+          field="contactinfo"
+          label="Contact info"
+          searchable
+          centered
+          :visible="VIEWABLE_COLUMNS['CURRENT_INFO']['contactinfo']"
           sortable
         >
-          <span class="tag is-medium">{{ props.row.linktoprarequest }}</span>
+          <span class="tag is-medium">{{ props.row.currentcontact.info }}</span>
         </b-table-column>
         <b-table-column
           field="leadmember"
@@ -265,7 +278,6 @@
         <b-table-column
           field="issheriffsdept"
           label="SD/PD"
-          searchable
           centered
           :visible="VIEWABLE_COLUMNS['INITIAL_INFO']['issheriffsdept']"
           sortable
@@ -290,7 +302,7 @@
           centered
           :visible="VIEWABLE_COLUMNS['ANALYSIS']['datereceived']"
           sortable
-          :custom-sort="dateReceivedSort"
+          :custom-sort="dateSort('datereceived')"
         >
           <span class="tag is-medium">
             {{
@@ -372,12 +384,10 @@
         </b-table-column>
       </template>
     </b-table>
-  </section>
+  </div>
 </template>
 
 <script>
-// CONTINUE WITH:
-// change this.columns to work with columns to labels being an object instead of an array
 import axios from "axios";
 import JsonCSV from "vue-json-csv";
 
@@ -387,77 +397,49 @@ import {
   SEARCHABLE_COLUMNS,
   FIELDS_TO_EXPORT,
 } from "../../definitions.js";
-
-import { prepareDataForExporting, filterFieldsToExport } from "./csvExport.js";
+import {
+  filterFieldsToExport,
+  objectValuesToString,
+  prepareDataForExporting,
+} from "./csvExport.js";
 
 export default {
+  name: "Table",
   data() {
     return {
-      data: [],
-      columns: [],
+      // We don't currently use checkedRows for anything, but could possibly in the future allow for
+      //  export of only checked rows. The b-table binds the checkedRows to this property
       checkedRows: [],
+      // Tracks the current page. The b-table binds to this value
       currentPage: 1,
-      VIEWABLE_COLUMNS,
+      // Array that holds all database data to display in the b-table
+      data: [],
+
+      // Make imported veriables/functions available for use throughout component
       COLUMNS_TO_LABELS,
       FIELDS_TO_EXPORT,
-      prepareDataForExporting,
+      VIEWABLE_COLUMNS,
+
       filterFieldsToExport,
+      objectValuesToString,
+      prepareDataForExporting,
     };
   },
+  // When the component mounts, fetch data from backend and store in 'data' attribute
   mounted() {
     axios
       .get("https://pra-tracking-dev.herokuapp.com/api/pra?fields=all")
       .then((response) => (this.data = response.data));
   },
   methods: {
-    dateOfRequestSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.dateofrequest).getTime() -
-            new Date(a.dateofrequest).getTime()
-        : new Date(a.dateofrequest).getTime() -
-            new Date(b.dateofrequest).getTime();
-    },
-    dateReceivedSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.datereceived).getTime() -
-            new Date(a.datereceived).getTime()
-        : new Date(a.datereceived).getTime() -
-            new Date(b.datereceived).getTime();
-    },
-    startDateRequestedSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.startdaterequested).getTime() -
-            new Date(a.startdaterequested).getTime()
-        : new Date(a.startdaterequested).getTime() -
-            new Date(b.startdaterequested).getTime();
-    },
-    endDateRequestedSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.enddaterequested).getTime() -
-            new Date(a.enddaterequested).getTime()
-        : new Date(a.enddaterequested).getTime() -
-            new Date(b.enddaterequested).getTime();
-    },
-    startDateReturnedSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.startdatereturned).getTime() -
-            new Date(a.startdatereturned).getTime()
-        : new Date(a.startdatereturned).getTime() -
-            new Date(b.startdatereturned).getTime();
-    },
-    endDateReturnedSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.enddatereturned).getTime() -
-            new Date(a.enddatereturned).getTime()
-        : new Date(a.enddatereturned).getTime() -
-            new Date(b.enddatereturned).getTime();
-    },
-    dateOfLastContactSort(a, b, isAsc) {
-      return isAsc
-        ? new Date(b.dateoflastcontact).getTime() -
-            new Date(a.dateoflastcontact).getTime()
-        : new Date(a.dateoflastcontact).getTime() -
-            new Date(b.dateoflastcontact).getTime();
+    // Used to sort dates in the table. First pass in the field name,
+    //   which returns the function to sort that field.
+    dateSort(field) {
+      return function(a, b, isAsc) {
+        return isAsc
+          ? new Date(b[field]).getTime() - new Date(a[field]).getTime()
+          : new Date(a[field]).getTime() - new Date(b[field]).getTime();
+      };
     },
   },
 };
@@ -467,40 +449,38 @@ export default {
 .checkboxes {
   width: 100%;
   margin: 0.25em auto;
-  /* justify-content: space-between;
-  display: grid;
-  grid-template-columns: 1fr; */
 }
 
-#columnOptions {
-  margin-bottom: 2em;
-  margin-top: -1em;
+.columnOptions {
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
-nav {
-  padding-right: 3em;
-}
-
-#toggleArea {
+.toggleArea {
   display: grid;
   grid-template-columns: 0.25fr 0.25fr 0.25fr 0.25fr;
+  margin-top: 2rem;
 }
 
 .checkboxDiv {
   display: block;
-  /* clear: both; */
 }
 
 .columnOptions {
-  /* display: flex;
-  justify-content: space-evenly; */
-  /* justify-content: center; */
-  /* align-content: center;  */
   padding: 0 3em;
 }
 
 .download {
   margin-left: 3em;
+}
+
+.table {
+  max-width: 100vw;
+  overflow-x: scroll;
+}
+
+.table div.control {
+  width: 100%;
 }
 
 .tableInfo {
