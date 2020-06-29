@@ -1,8 +1,8 @@
 <template>
   <div>
     <b-collapse class="columnOptions" :open="false">
-      <button class="button is-primary" id="columnOptions" slot="trigger">Show/Hide Column Option</button>
-      <div id="toggleArea">
+      <button class="button is-primary" slot="trigger">Show/Hide Column Option</button>
+      <div class="toggleArea">
         <div class="checkboxes content">
           <h4 class="checkboxHeader">Initial information:</h4>
           <div class="checkboxDiv">
@@ -71,21 +71,17 @@
     <b-table
       class="table"
       :data="data"
-      :checked-rows.sync="checkedRows"
-      checkbox-position="left"
-      checkable
       hoverable
       paginated
       :current-page.sync="currentPage"
       paginationPosition="bottom"
       per-page="25"
       default-sort-direction="asc"
-      default-sort="county"
+      default-sort="lea"
     >
       <template slot-scope="props">
-        <b-table-column centered>
+        <b-table-column centered searchable field="View" label="View" visible custom-key="View">
           <b-button
-            field="id"
             type="is-primary"
             outlined
             tag="router-link"
@@ -101,7 +97,6 @@
         <b-table-column
           field="county"
           label="County"
-          searchable
           centered
           sortable
           :visible="VIEWABLE_COLUMNS['INITIAL_INFO']['county']"
@@ -231,7 +226,9 @@
           :visible="VIEWABLE_COLUMNS['CURRENT_INFO']['linktoprarequest']"
           sortable
         >
-          <span class="tag is-medium">{{ props.row.linktoprarequest }}</span>
+          <a :href=" '//' + props.row.linktoprarequest" target="_blank">
+            <img alt="link" src="../../assets/link_icon.svg" width="24" />
+          </a>
         </b-table-column>
         <b-table-column
           field="leadmember"
@@ -417,14 +414,15 @@ export default {
   margin: 0.25em auto;
 }
 
-#columnOptions {
-  margin-bottom: 2em;
-  margin-top: -1em;
+.columnOptions {
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
-#toggleArea {
+.toggleArea {
   display: grid;
   grid-template-columns: 0.25fr 0.25fr 0.25fr 0.25fr;
+  margin-top: 2rem;
 }
 
 .checkboxDiv {
