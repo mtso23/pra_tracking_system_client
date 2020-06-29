@@ -258,7 +258,6 @@
         <b-table-column
           field="contactinfo"
           label="Contact info"
-          searchable
           centered
           :visible="VIEWABLE_COLUMNS['CURRENT_INFO']['contactinfo']"
           sortable
