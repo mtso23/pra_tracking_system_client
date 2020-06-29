@@ -21,6 +21,7 @@ export const VIEWABLE_COLUMNS = {
     currentstatus: true,
     dateoflastcontact: false,
     linktoprarequest: true,
+    contactinfo: false,
   },
   ANALYSIS: {
     datereceived: true,
@@ -124,6 +125,7 @@ export const COLUMNS_TO_LABELS = {
   datacleaned: "Cleaned",
   datageocoded: "Geocoded",
   dataanalyzed: "Analyzed",
+  contactinfo: "Contact info",
 };
 
 // The available statuses for a PRA that show up under select option for 'Status'

@@ -1,7 +1,9 @@
 <template>
   <div>
     <b-collapse class="columnOptions" :open="false">
-      <button class="button is-primary" slot="trigger">Show/Hide Column Option</button>
+      <button class="button is-primary" slot="trigger">
+        Show/Hide Column Option
+      </button>
       <div class="toggleArea">
         <div class="checkboxes content">
           <h4 class="checkboxHeader">Initial information:</h4>
@@ -11,17 +13,23 @@
               :key="name"
               class="control"
             >
-              <b-checkbox
-                v-model="VIEWABLE_COLUMNS['INITIAL_INFO'][name]"
-              >{{ COLUMNS_TO_LABELS[name] }}</b-checkbox>
+              <b-checkbox v-model="VIEWABLE_COLUMNS['INITIAL_INFO'][name]">{{
+                COLUMNS_TO_LABELS[name]
+              }}</b-checkbox>
             </div>
           </div>
         </div>
         <div class="checkboxes content">
           <h4 class="checkboxHeader">Dates:</h4>
           <div class="checkboxDiv">
-            <div v-for="(state, name) in VIEWABLE_COLUMNS['DATES']" :key="name" class="control">
-              <b-checkbox v-model="VIEWABLE_COLUMNS['DATES'][name]">{{ COLUMNS_TO_LABELS[name] }}</b-checkbox>
+            <div
+              v-for="(state, name) in VIEWABLE_COLUMNS['DATES']"
+              :key="name"
+              class="control"
+            >
+              <b-checkbox v-model="VIEWABLE_COLUMNS['DATES'][name]">{{
+                COLUMNS_TO_LABELS[name]
+              }}</b-checkbox>
             </div>
           </div>
         </div>
@@ -33,17 +41,23 @@
               :key="name"
               class="control"
             >
-              <b-checkbox
-                v-model="VIEWABLE_COLUMNS['CURRENT_INFO'][name]"
-              >{{ COLUMNS_TO_LABELS[name] }}</b-checkbox>
+              <b-checkbox v-model="VIEWABLE_COLUMNS['CURRENT_INFO'][name]">{{
+                COLUMNS_TO_LABELS[name]
+              }}</b-checkbox>
             </div>
           </div>
         </div>
         <div class="checkboxes content">
           <h4 class="checkboxHeader">Analysis:</h4>
           <div class="checkboxDiv">
-            <div v-for="(state, name) in VIEWABLE_COLUMNS['ANALYSIS']" :key="name" class="control">
-              <b-checkbox v-model="VIEWABLE_COLUMNS['ANALYSIS'][name]">{{ COLUMNS_TO_LABELS[name] }}</b-checkbox>
+            <div
+              v-for="(state, name) in VIEWABLE_COLUMNS['ANALYSIS']"
+              :key="name"
+              class="control"
+            >
+              <b-checkbox v-model="VIEWABLE_COLUMNS['ANALYSIS'][name]">{{
+                COLUMNS_TO_LABELS[name]
+              }}</b-checkbox>
             </div>
           </div>
         </div>
@@ -57,15 +71,19 @@
         class="download"
         :data="prepareDataForExporting(data)"
         :fields="FIELDS_TO_EXPORT"
+        :name="'data_all_' + new Date().toLocaleDateString()"
       >
-        <b-button type="is-primary" rounded>Download all</b-button>
+        <b-button type="is-primary" rounded>Download all as CSV</b-button>
       </download-csv>
       <download-csv
         class="download"
         :data="prepareDataForExporting(data)"
         :fields="filterFieldsToExport(FIELDS_TO_EXPORT, VIEWABLE_COLUMNS)"
+        :name="'data_filtered_' + new Date().toLocaleDateString()"
       >
-        <b-button type="is-link" rounded outlined>Download only visible columns</b-button>
+        <b-button type="is-link" rounded outlined
+          >Download only visible columns as CSV</b-button
+        >
       </download-csv>
     </section>
     <b-table
@@ -80,7 +98,13 @@
       default-sort="lea"
     >
       <template slot-scope="props">
-        <b-table-column centered searchable field="View" label="View" visible custom-key="View">
+        <b-table-column
+          centered
+          custom-key="View"
+          field="id"
+          label="View"
+          visible
+        >
           <b-button
             type="is-primary"
             outlined
@@ -92,12 +116,14 @@
                 updating: true,
               },
             }"
-          >View</b-button>
+            >View</b-button
+          >
         </b-table-column>
         <b-table-column
           field="county"
           label="County"
           centered
+          searchable
           sortable
           :visible="VIEWABLE_COLUMNS['INITIAL_INFO']['county']"
         >
@@ -133,9 +159,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.dateofrequest
-            ? new Date(props.row.dateofrequest).toLocaleDateString()
-            : ""
+              props.row.dateofrequest
+                ? new Date(props.row.dateofrequest).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -149,9 +175,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.startdaterequested
-            ? new Date(props.row.startdaterequested).toLocaleDateString()
-            : ""
+              props.row.startdaterequested
+                ? new Date(props.row.startdaterequested).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -165,9 +191,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.enddaterequested
-            ? new Date(props.row.enddaterequested).toLocaleDateString()
-            : ""
+              props.row.enddaterequested
+                ? new Date(props.row.enddaterequested).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -181,9 +207,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.startdatereturned
-            ? new Date(props.row.startdatereturned).toLocaleDateString()
-            : ""
+              props.row.startdatereturned
+                ? new Date(props.row.startdatereturned).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -197,9 +223,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.enddatereturned
-            ? new Date(props.row.enddatereturned).toLocaleDateString()
-            : ""
+              props.row.enddatereturned
+                ? new Date(props.row.enddatereturned).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -213,22 +239,31 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.dateoflastcontact
-            ? new Date(props.row.dateoflastcontact).toLocaleDateString()
-            : ""
+              props.row.dateoflastcontact
+                ? new Date(props.row.dateoflastcontact).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
         <b-table-column
           field="linktoprarequest"
-          label="Link to PRA Request"
+          label="Link to request"
           centered
           :visible="VIEWABLE_COLUMNS['CURRENT_INFO']['linktoprarequest']"
-          sortable
         >
-          <a :href=" '//' + props.row.linktoprarequest" target="_blank">
+          <a :href="'//' + props.row.linktoprarequest" target="_blank">
             <img alt="link" src="../../assets/link_icon.svg" width="24" />
           </a>
+        </b-table-column>
+        <b-table-column
+          field="contactinfo"
+          label="Contact info"
+          searchable
+          centered
+          :visible="VIEWABLE_COLUMNS['CURRENT_INFO']['contactinfo']"
+          sortable
+        >
+          <span class="tag is-medium">{{ props.row.currentcontact.info }}</span>
         </b-table-column>
         <b-table-column
           field="leadmember"
@@ -243,15 +278,12 @@
         <b-table-column
           field="issheriffsdept"
           label="SD/PD"
-          searchable
           centered
           :visible="VIEWABLE_COLUMNS['INITIAL_INFO']['issheriffsdept']"
           sortable
         >
           <span class="tag is-medium">
-            {{
-            props.row.issheriffsdept ? "SD" : "PD"
-            }}
+            {{ props.row.issheriffsdept ? "SD" : "PD" }}
           </span>
         </b-table-column>
         <b-table-column
@@ -274,9 +306,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.datereceived
-            ? new Date(props.row.datereceived).toLocaleDateString()
-            : ""
+              props.row.datereceived
+                ? new Date(props.row.datereceived).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -363,9 +395,13 @@ import {
   COLUMNS_TO_LABELS,
   VIEWABLE_COLUMNS,
   SEARCHABLE_COLUMNS,
-  FIELDS_TO_EXPORT
+  FIELDS_TO_EXPORT,
 } from "../../definitions.js";
-import { prepareDataForExporting, filterFieldsToExport } from "./csvExport.js";
+import {
+  filterFieldsToExport,
+  objectValuesToString,
+  prepareDataForExporting,
+} from "./csvExport.js";
 
 export default {
   name: "Table",
@@ -385,14 +421,15 @@ export default {
       VIEWABLE_COLUMNS,
 
       filterFieldsToExport,
-      prepareDataForExporting
+      objectValuesToString,
+      prepareDataForExporting,
     };
   },
   // When the component mounts, fetch data from backend and store in 'data' attribute
   mounted() {
     axios
       .get("https://pra-tracking-dev.herokuapp.com/api/pra?fields=all")
-      .then(response => (this.data = response.data));
+      .then((response) => (this.data = response.data));
   },
   methods: {
     // Used to sort dates in the table. First pass in the field name,
@@ -403,8 +440,8 @@ export default {
           ? new Date(b[field]).getTime() - new Date(a[field]).getTime()
           : new Date(a[field]).getTime() - new Date(b[field]).getTime();
       };
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -440,6 +477,10 @@ export default {
 .table {
   max-width: 100vw;
   overflow-x: scroll;
+}
+
+.table div.control {
+  width: 100%;
 }
 
 .tableInfo {

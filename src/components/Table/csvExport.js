@@ -1,5 +1,17 @@
 import moment from "moment";
 
+// Converts an object to a string with each value space separated
+export const objectValuesToString = (obj) => {
+  let str = "";
+  for (const key in obj) {
+    str += `${obj[key]} `;
+  }
+  if (str.length > 0 && str[str.length - 1] === "\n") {
+    str = str.substring(0, str.length - 1);
+  }
+  return str;
+};
+
 // Converts an object to a string with each key/value on a newline
 const objectToString = (obj) => {
   let str = "";
