@@ -21,7 +21,8 @@ export const VIEWABLE_COLUMNS = {
     currentstatus: true,
     dateoflastcontact: false,
     linktoprarequest: true,
-    contactinfo: false,
+    // Since contact info is an object, don't show in the table as it will look funky
+    // contactinfo: false,
   },
   ANALYSIS: {
     datereceived: true,
