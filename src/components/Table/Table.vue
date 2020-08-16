@@ -418,7 +418,6 @@ export default {
       .get("https://pra-tracking-dev.herokuapp.com/api/pra?fields=all")
       .then(response => {
         this.data = response.data;
-        console.log(this.data);
       });
   },
   methods: {

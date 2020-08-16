@@ -100,6 +100,12 @@
               </b-field>
             </template>
           </b-field>
+          <b-field expanded label="Link to PRA Request">
+            <b-input type="text" v-model="data.linktoprarequest"></b-input>
+          </b-field>
+          <b-field label="Comments">
+            <b-input maxlength="2000" v-model="data.comments" type="textarea"></b-input>
+          </b-field>
         </section>
         <section class="formSection">
           <h1 class="title sectionHeader">Dates</h1>
@@ -427,10 +433,6 @@ export default {
       this.prepareUpdatingForm();
     }
   },
-  updated: function() {
-    console.log(this.data.currentcontact);
-    console.log(this.initialData);
-  },
   computed: {
     progress: function() {
       const numValidKeys = Object.keys(this.data).filter(
@@ -465,13 +467,7 @@ export default {
         this.$set(this.data, "initialcontact", {});
       }
       if (!("currentcontact" in this.data)) {
-        this.$set(this.data, "currentcontact", {
-          method: "",
-          name: "",
-          info: "",
-          username: "",
-          portal: ""
-        });
+        this.$set(this.data, "currentcontact", {});
       }
       if (!("updates" in this.data)) {
         this.$set(this.data, "updates", []);
