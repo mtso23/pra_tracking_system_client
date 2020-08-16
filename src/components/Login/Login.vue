@@ -1,19 +1,22 @@
 <template >
   <div class="Login--Container">
     <img class="Login--Logo" width="300" src="../../assets/logo.png" />
-    <b-field class="Login--Input" label="Username">
-      <b-input type="text" v-model="login_info['username']"></b-input>
-    </b-field>
-    <b-field class="Login--Input" label="Password">
-      <b-input type="password" v-model="login_info['password']" password-reveal></b-input>
-    </b-field>
-    <b-button
-      class="Login--Submit"
-      rounded
-      size="is-medium"
-      type="is-success"
-      v-on:click="postLogin"
-    >Login</b-button>
+    <form>
+      <b-field class="Login--Input" label="Username">
+        <b-input type="text" v-model="login_info['username']"></b-input>
+      </b-field>
+      <b-field class="Login--Input" label="Password">
+        <b-input type="password" v-model="login_info['password']" password-reveal></b-input>
+      </b-field>
+      <b-button
+        class="Login--Submit"
+        roundedbuefy
+        size="is-medium"
+        type="is-success"
+        v-on:click="postLogin"
+        native-type="submit"
+      >Login</b-button>
+    </form>
   </div>
 </template>
 
