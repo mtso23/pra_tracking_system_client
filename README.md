@@ -2,6 +2,8 @@
 
 PRA tracking system for MDH
 
+To run locally, navigate to the root of the project and run `npm run serve`. The site will then be available at `http://localhost:8080`.
+
 ## Component layout
 
 The root Vue component is the App.vue App.

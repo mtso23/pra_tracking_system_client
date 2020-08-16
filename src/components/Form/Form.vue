@@ -46,7 +46,6 @@
 
           <b-field grouped>
             <b-field
-              expanded
               label="Initial contact name"
               :type="{ 'is-success': data.initialcontact.name }"
             >
@@ -57,9 +56,49 @@
                 <option v-for="method in CONTACT_METHODS" :key="method" :value="method">{{ method }}</option>
               </b-select>
             </b-field>
-            <b-field expanded label="Info" :type="{ 'is-success': data.initialcontact.info }">
-              <b-input placeholder="Contact info" v-model="data.initialcontact.info"></b-input>
+            <b-field
+              v-if="data.initialcontact.method === 'Phone'"
+              expanded
+              label="Phone number"
+              :type="{ 'is-success': data.initialcontact.info }"
+            >
+              <b-input placeholder="(555) 555-5555" v-model="data.initialcontact.info"></b-input>
             </b-field>
+            <b-field
+              v-else-if="data.initialcontact.method === 'Email'"
+              expanded
+              label="Email address"
+              :type="{ 'is-success': data.initialcontact.info }"
+            >
+              <b-input placeholder="contact@email.com" v-model="data.initialcontact.info"></b-input>
+            </b-field>
+            <b-field
+              v-else-if="data.initialcontact.method === 'Fax'"
+              expanded
+              label="Fax number"
+              :type="{ 'is-success': data.initialcontact.info }"
+            >
+              <b-input placeholder="(555) 555-5555" v-model="data.initialcontact.info"></b-input>
+            </b-field>
+            <template v-else-if="data.initialcontact.method === 'Portal'">
+              <b-field expanded label="Website" :type="{ 'is-success': data.initialcontact.info }">
+                <b-input placeholder="https://www.portal.com" v-model="data.initialcontact.info"></b-input>
+              </b-field>
+              <b-field
+                expanded
+                label="Username"
+                :type="{ 'is-success': data.initialcontact.username }"
+              >
+                <b-input placeholder="mdhAdmin" v-model="data.initialcontact.username"></b-input>
+              </b-field>
+              <b-field
+                expanded
+                label="Password"
+                :type="{ 'is-success': data.initialcontact.password }"
+              >
+                <b-input placeholder="******" v-model="data.initialcontact.password"></b-input>
+              </b-field>
+            </template>
           </b-field>
           <b-field expanded label="Link to PRA Request">
             <b-input type="text" v-model="data.linktoprarequest"></b-input>
@@ -193,7 +232,6 @@
           </b-field>
           <b-field grouped>
             <b-field
-              expanded
               label="Current contact name"
               :type="{ 'is-success': data.currentcontact.name }"
             >
@@ -204,9 +242,49 @@
                 <option v-for="method in CONTACT_METHODS" :key="method" :value="method">{{ method }}</option>
               </b-select>
             </b-field>
-            <b-field expanded label="Info" :type="{ 'is-success': data.currentcontact.info }">
-              <b-input placeholder="Contact info" v-model="data.currentcontact.info"></b-input>
+            <b-field
+              v-if="data.currentcontact.method === 'Phone'"
+              expanded
+              label="Phone number"
+              :type="{ 'is-success': data.currentcontact.info }"
+            >
+              <b-input placeholder="(555) 555-5555" v-model="data.currentcontact.info"></b-input>
             </b-field>
+            <b-field
+              v-else-if="data.currentcontact.method === 'Email'"
+              expanded
+              label="Email address"
+              :type="{ 'is-success': data.currentcontact.info }"
+            >
+              <b-input placeholder="contact@email.com" v-model="data.currentcontact.info"></b-input>
+            </b-field>
+            <b-field
+              v-else-if="data.currentcontact.method === 'Fax'"
+              expanded
+              label="Fax number"
+              :type="{ 'is-success': data.currentcontact.info }"
+            >
+              <b-input placeholder="(555) 555-5555" v-model="data.currentcontact.info"></b-input>
+            </b-field>
+            <template v-else-if="data.currentcontact.method === 'Portal'">
+              <b-field expanded label="Website" :type="{ 'is-success': data.currentcontact.info }">
+                <b-input placeholder="https://www.portal.com" v-model="data.currentcontact.info"></b-input>
+              </b-field>
+              <b-field
+                expanded
+                label="Username"
+                :type="{ 'is-success': data.currentcontact.username }"
+              >
+                <b-input placeholder="mdhAdmin" v-model="data.currentcontact.username"></b-input>
+              </b-field>
+              <b-field
+                expanded
+                label="Password"
+                :type="{ 'is-success': data.currentcontact.password }"
+              >
+                <b-input placeholder="******" v-model="data.currentcontact.password"></b-input>
+              </b-field>
+            </template>
           </b-field>
         </section>
         <section class="formSection">
@@ -355,7 +433,6 @@ export default {
       this.prepareUpdatingForm();
     }
   },
-  destroyed: function() {},
   computed: {
     progress: function() {
       const numValidKeys = Object.keys(this.data).filter(
