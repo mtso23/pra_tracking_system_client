@@ -66,7 +66,7 @@
         <b class="totalChecked">Total selected: {{ checkedRows.length }}</b>
       </span>-->
       <download-csv
-        class="download"
+        class="TableHeader--Button"
         :data="prepareDataForExporting(data)"
         :fields="FIELDS_TO_EXPORT"
         :name="'data_all_' + new Date().toLocaleDateString()"
@@ -74,13 +74,20 @@
         <b-button type="is-primary" rounded>Download all as CSV</b-button>
       </download-csv>
       <download-csv
-        class="download"
+        class="TableHeader--Button"
         :data="prepareDataForExporting(data)"
         :fields="filterFieldsToExport(FIELDS_TO_EXPORT, VIEWABLE_COLUMNS)"
         :name="'data_filtered_' + new Date().toLocaleDateString()"
       >
         <b-button type="is-link" rounded outlined>Download only visible columns as CSV</b-button>
       </download-csv>
+      <b-button
+        class="TableHeader--Button"
+        type="is-danger"
+        rounded
+        :disabled="checkedRows.length === 0"
+        v-on:click="confirmDeletePRAs"
+      >Delete {{ checkedRows.length }} checked entries</b-button>
     </section>
     <b-table
       class="table"
@@ -92,6 +99,9 @@
       per-page="25"
       default-sort-direction="asc"
       default-sort="lea"
+      checkable
+      checkbox-position="left"
+      :checked-rows.sync="checkedRows"
     >
       <template slot-scope="props">
         <b-table-column centered custom-key="View" field="id" label="View" visible>
@@ -429,6 +439,49 @@ export default {
           ? new Date(b[field]).getTime() - new Date(a[field]).getTime()
           : new Date(a[field]).getTime() - new Date(b[field]).getTime();
       };
+    },
+    deletePRA: async function(praID) {
+      // Delete from db
+      await axios.delete(
+        `https://pra-tracking-dev.herokuapp.com/api/pra/${praID}`
+      );
+      // Delete from local data
+      const deletedItemIdx = this.data.findIndex(pra => pra.id === praID);
+      this.data.splice(deletedItemIdx, 1);
+    },
+    deletePRAs: async function(PRAs) {
+      try {
+        for (const PRA of PRAs) {
+          await this.deletePRA(PRA.id);
+        }
+        // Remove from checked rows
+        this.checkedRows = [];
+        this.alertDeleteSuccess();
+      } catch (err) {
+        this.alertDeleteFailure();
+      }
+    },
+    confirmDeletePRAs: function() {
+      this.$buefy.dialog.confirm({
+        title: "Deleting PRAs",
+        message:
+          "Are you sure you want to <b>delete</b> these entries? This action cannot be undone.",
+        confirmText: "Delete",
+        type: "is-danger",
+        hasIcon: true,
+        onConfirm: () => this.deletePRAs(this.checkedRows)
+      });
+    },
+    alertDeleteFailure() {
+      this.$buefy.dialog.alert("Error deleting PRA requests");
+    },
+    alertDeleteSuccess() {
+      this.$buefy.toast.open({
+        message: "Successfully deleted",
+        type: "is-danger",
+        duration: 5000,
+        position: "is-bottom"
+      });
     }
   }
 };
@@ -459,7 +512,7 @@ export default {
   padding: 0 3em;
 }
 
-.download {
+.TableHeader--Button {
   margin-left: 3em;
 }
 
