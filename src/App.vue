@@ -1,24 +1,24 @@
 <template>
   <div id="app">
-    <Login v-if="ACCESS_CONTROL.access === 'none'" />
-    <router-view v-if="ACCESS_CONTROL.access !== 'none'" />
+    <Login v-if="config.ACCESS_CONTROL === 'none'" />
+    <router-view v-if="config.ACCESS_CONTROL !== 'none'" />
   </div>
 </template>
 
 <script>
 import Login from "./components/Login/Login";
-import { ACCESS_CONTROL } from "./definitions.js";
+import config from "./config.js";
 
 export default {
   name: "app",
   data: function() {
     return {
-      ACCESS_CONTROL
+      config,
     };
   },
   components: {
-    Login
-  }
+    Login,
+  },
 };
 </script>
 
@@ -33,40 +33,40 @@ $primary-invert: findColorInvert($primary);
 $colors: (
   "white": (
     $white,
-    $black
+    $black,
   ),
   "black": (
     $black,
-    $white
+    $white,
   ),
   "light": (
     $light,
-    $light-invert
+    $light-invert,
   ),
   "dark": (
     $dark,
-    $dark-invert
+    $dark-invert,
   ),
   "primary": (
     $primary,
-    $primary-invert
+    $primary-invert,
   ),
   "info": (
     $info,
-    $info-invert
+    $info-invert,
   ),
   "success": (
     $success,
-    $success-invert
+    $success-invert,
   ),
   "warning": (
     $warning,
-    $warning-invert
+    $warning-invert,
   ),
   "danger": (
     $danger,
-    $danger-invert
-  )
+    $danger-invert,
+  ),
 );
 
 @import "~bulma";

@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import { ACCESS_CONTROL } from "../../definitions.js";
 import axios from "axios";
 import config from "../../config";
 
@@ -40,7 +39,7 @@ export default {
         password: "",
       },
       // Import global ACCESS_CONTROL to update based on permissions given from backend
-      ACCESS_CONTROL,
+      config,
     };
   },
   methods: {
@@ -58,7 +57,11 @@ export default {
         );
 
         if (response.status === 200) {
-          ACCESS_CONTROL["access"] = response.data.access;
+          config.ACCESS_CONTROL = response.data.access;
+          localStorage.setItem("access", response.data.access);
+          // Expire in two weeks
+          const expiryDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
+          localStorage.setItem("expiry", expiryDate.toUTCString());
           this.alertLoginSuccess();
         } else {
           throw new Error("Received non-200 status code from server on login");

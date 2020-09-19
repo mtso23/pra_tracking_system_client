@@ -5,7 +5,19 @@
       <template slot="start">
         <b-navbar-item href="#/">Home</b-navbar-item>
         <b-navbar-item href="#/form">Create</b-navbar-item>
-        <b-navbar-item href="/">Logout</b-navbar-item>
+        <b-navbar-item href="/">
+          <div>
+            <b-button
+              class="Header--Logout"
+              size="is-medium"
+              type="is-primary is-light"
+              v-on:click="logout"
+              native-type="button"
+              outlined
+              >Logout</b-button
+            >
+          </div>
+        </b-navbar-item>
       </template>
     </b-navbar>
   </div>
@@ -13,7 +25,13 @@
 
 <script>
 export default {
-  name: "Header"
+  name: "Header",
+  methods: {
+    logout() {
+      localStorage.clear();
+      window.location.href = "/";
+    },
+  },
 };
 </script>
 

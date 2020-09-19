@@ -1,5 +1,3 @@
-export const ACCESS_CONTROL = { access: "none" };
-
 /* Defines which columns are seen by default */
 /* mark true to show by default and false to hide */
 export const VIEWABLE_COLUMNS = {
