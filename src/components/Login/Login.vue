@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="Login--Container">
     <img class="Login--Logo" width="300" src="../../assets/logo.png" />
     <form>
@@ -6,7 +6,11 @@
         <b-input type="text" v-model="login_info['username']"></b-input>
       </b-field>
       <b-field class="Login--Input" label="Password">
-        <b-input type="password" v-model="login_info['password']" password-reveal></b-input>
+        <b-input
+          type="password"
+          v-model="login_info['password']"
+          password-reveal
+        ></b-input>
       </b-field>
       <b-button
         class="Login--Submit"
@@ -14,8 +18,9 @@
         size="is-medium"
         type="is-success"
         v-on:click="postLogin"
-        native-type="submit"
-      >Login</b-button>
+        native-type="button"
+        >Login</b-button
+      >
     </form>
   </div>
 </template>
@@ -23,6 +28,7 @@
 <script>
 import { ACCESS_CONTROL } from "../../definitions.js";
 import axios from "axios";
+import config from "../../config";
 
 export default {
   name: "Login",
@@ -31,43 +37,42 @@ export default {
       // Initalize login data to empty strings
       login_info: {
         username: "",
-        password: ""
+        password: "",
       },
       // Import global ACCESS_CONTROL to update based on permissions given from backend
-      ACCESS_CONTROL
+      ACCESS_CONTROL,
     };
   },
   methods: {
-    postLogin() {
+    async postLogin() {
       // Send login input data to backend.
       //  On success, show success toast.
       //  On failure, show failure toast.
-      axios
-        .post(
-          `https://pra-tracking-dev.herokuapp.com/api/login`,
+      try {
+        const response = await axios.post(
+          config.LOGIN_URL,
           JSON.stringify(this.login_info),
           {
-            headers: { "Content-type": "application/json" }
+            headers: { "Content-type": "application/json" },
           }
-        )
-        .then(response => {
-          if (response.status == 200) {
-            ACCESS_CONTROL["access"] = response.data.access;
-            this.alertLoginSuccess();
-          } else {
-            this.alertLoginFailure();
-          }
-        })
-        .catch(() => {
-          this.alertLoginFailure();
-        });
+        );
+
+        if (response.status === 200) {
+          ACCESS_CONTROL["access"] = response.data.access;
+          this.alertLoginSuccess();
+        } else {
+          throw new Error("Received non-200 status code from server on login");
+        }
+      } catch (err) {
+        this.alertLoginFailure();
+      }
     },
     alertLoginSuccess() {
       this.$buefy.toast.open({
         message: "Successfully logged in",
         type: "is-success",
         duration: 5000,
-        position: "is-bottom"
+        position: "is-bottom",
       });
     },
     alertLoginFailure() {
@@ -75,10 +80,10 @@ export default {
         message: "Incorrect login information",
         type: "is-danger",
         duration: 5000,
-        position: "is-bottom"
+        position: "is-bottom",
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
