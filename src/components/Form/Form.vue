@@ -15,6 +15,12 @@
         <section class="formSection" id="initialData">
           <h1 class="title sectionHeader">Initial information</h1>
           <b-field grouped>
+            <b-field label="Active">
+              <b-checkbox
+                v-model="data.active"
+                id="active"
+              ></b-checkbox>
+            </b-field>
             <b-field
               label="Date of request"
               :type="{ 'is-success': data.dateofrequest instanceof Date }"
@@ -37,7 +43,10 @@
             <b-field expanded label="LEA" :type="{ 'is-success': data.lea }">
               <b-input v-model="data.lea"></b-input>
             </b-field>
-            <b-field label="Sheriff's deptartment?">
+          </b-field>
+
+          <b-field grouped>
+            <b-field label="Sheriff's deptartment">
               <b-checkbox
                 v-model="data.issheriffsdept"
                 id="sheriffsCheckbox"
@@ -52,9 +61,6 @@
                 <option v-if="updating" value="Bookings">Bookings</option>
               </b-select>
             </b-field>
-          </b-field>
-
-          <b-field grouped>
             <b-field
               label="Initial contact name"
               :type="{ 'is-success': data.initialcontact.name }"
@@ -676,6 +682,16 @@ export default {
           new Date(this.data["dateoflastcontact"])
         );
       }
+            if (
+        "lastupdated" in this.data &&
+        this.data["lastupdated"] != null
+      ) {
+        this.$set(
+          this.data,
+          "lastupdated",
+          new Date(this.data["lastupdated"])
+        );
+      }
     },
     submitUpdate: function() {
       if (this.currentUpdate != "") {
@@ -705,6 +721,7 @@ export default {
     },
     createPRA: function() {
       const vm = this;
+      this.data.lastupdated = new Date();
       axios
         .post(
           "https://pra-tracking-dev.herokuapp.com/api/pra",
@@ -740,7 +757,7 @@ export default {
                     vm.alertCreationFailure();
                   }
                 })
-                .catch(function(error) {
+                .catch(function() {
                   vm.alertCreationFailure();
                 });
             }
@@ -756,11 +773,12 @@ export default {
             vm.alertCreationFailure();
           }
         })
-        .catch(function(error) {
+        .catch(function() {
           vm.alertCreationFailure();
         });
     },
     updatePRA: function() {
+      this.data.lastupdated = new Date();
       const vm = this;
       axios
         .put(
@@ -782,7 +800,7 @@ export default {
             vm.alertUpdateFailure();
           }
         })
-        .catch(function(error) {
+        .catch(function() {
           vm.alertUpdateFailure();
         });
     },
@@ -815,7 +833,7 @@ export default {
             vm.alertDeleteFailure();
           }
         })
-        .catch(function(error) {
+        .catch(function() {
           vm.alertDeleteFailure();
         });
     },
@@ -869,8 +887,9 @@ export default {
   text-align: left;
 }
 
-#sheriffsCheckbox {
+#sheriffsCheckbox, #active {
   margin-top: 0.5em;
+  margin-left: 0.5rem;
 }
 
 #cancelButton {

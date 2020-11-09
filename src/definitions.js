@@ -19,6 +19,7 @@ export const VIEWABLE_COLUMNS = {
     currentstatus: true,
     dateoflastcontact: false,
     linktoprarequest: true,
+    lastupdated: true,
     // Since contact info is an object, don't show in the table as it will look funky
     // contactinfo: false,
   },
@@ -45,6 +46,7 @@ export const SEARCHABLE_COLUMNS = new Set([
 // Array: each entry is an object mapping db field name to proper label
 // Ordered by order they appear in the form (logical ordering of interest
 export const ALL = [
+  { active: "Active" },
   { dateofrequest: "Date of request" },
   { county: "County" },
   { lea: "LEA" },
@@ -72,11 +74,14 @@ export const ALL = [
   { linktoprarequest: "Link to PRA request" },
   { updates: "Updates" }, // each entry is stored with key as timestamp and value as the note
   { comments: "Comments" },
+  { lastupdated: "Date last updated" },
 ];
 
 // Fields to export for csv
 // exclues: variables, comments, updates, linktoprarequest
 export const FIELDS_TO_EXPORT = [
+  "active",
+  "lastupdated",
   "dateofrequest",
   "county",
   "lea",
@@ -103,6 +108,8 @@ export const FIELDS_TO_EXPORT = [
 
 // Map of db field names to column labels for table
 export const COLUMNS_TO_LABELS = {
+  active: "Active",
+  lastupdated: "Date last updated",
   county: "County",
   lea: "LEA",
   dateofrequest: "Date of request",
