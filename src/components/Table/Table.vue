@@ -119,6 +119,19 @@
           >View</b-button>
         </b-table-column>
         <b-table-column
+          field="lastupdated"
+          label="Last updated"
+          centered
+          sortable
+          :visible="VIEWABLE_COLUMNS['CURRENT_INFO']['lastupdated']"
+          :custom-sort="dateSort('lastupdated')"
+        >
+          <span class="tag is-medium">
+            {{ props.row.lastupdated ? new Date(props.row.lastupdated).toLocaleDateString()
+            : "" }}
+            </span>
+        </b-table-column>
+        <b-table-column
           field="county"
           label="County"
           centered
@@ -386,12 +399,10 @@
 
 <script>
 import axios from "axios";
-import JsonCSV from "vue-json-csv";
 
 import {
   COLUMNS_TO_LABELS,
   VIEWABLE_COLUMNS,
-  SEARCHABLE_COLUMNS,
   FIELDS_TO_EXPORT
 } from "../../definitions.js";
 import {
