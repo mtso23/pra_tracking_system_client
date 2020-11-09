@@ -1,7 +1,19 @@
+<!-- pdf creation -->
+<script src="FileSaver.js-master/src/FileSaver.js"></script>
+<script src="jsPDF-master/dist/jspdf.debug.js"></script>
+
+<!-- custom font definition -->
+<script
+  src="path-to-the-file-just-saved/RopaSans-Regular-normal.js"
+  type="module"
+></script>
+
 <template>
   <div>
     <b-collapse class="columnOptions" :open="false">
-      <button class="button is-primary" slot="trigger">Show/Hide Column Option</button>
+      <button class="button is-primary" slot="trigger">
+        Show/Hide Column Option
+      </button>
       <div class="toggleArea">
         <div class="checkboxes content">
           <h4 class="checkboxHeader">Initial information:</h4>
@@ -11,23 +23,23 @@
               :key="name"
               class="control"
             >
-              <b-checkbox v-model="VIEWABLE_COLUMNS['INITIAL_INFO'][name]">
-                {{
+              <b-checkbox v-model="VIEWABLE_COLUMNS['INITIAL_INFO'][name]">{{
                 COLUMNS_TO_LABELS[name]
-                }}
-              </b-checkbox>
+              }}</b-checkbox>
             </div>
           </div>
         </div>
         <div class="checkboxes content">
           <h4 class="checkboxHeader">Dates:</h4>
           <div class="checkboxDiv">
-            <div v-for="(state, name) in VIEWABLE_COLUMNS['DATES']" :key="name" class="control">
-              <b-checkbox v-model="VIEWABLE_COLUMNS['DATES'][name]">
-                {{
+            <div
+              v-for="(state, name) in VIEWABLE_COLUMNS['DATES']"
+              :key="name"
+              class="control"
+            >
+              <b-checkbox v-model="VIEWABLE_COLUMNS['DATES'][name]">{{
                 COLUMNS_TO_LABELS[name]
-                }}
-              </b-checkbox>
+              }}</b-checkbox>
             </div>
           </div>
         </div>
@@ -39,32 +51,29 @@
               :key="name"
               class="control"
             >
-              <b-checkbox v-model="VIEWABLE_COLUMNS['CURRENT_INFO'][name]">
-                {{
+              <b-checkbox v-model="VIEWABLE_COLUMNS['CURRENT_INFO'][name]">{{
                 COLUMNS_TO_LABELS[name]
-                }}
-              </b-checkbox>
+              }}</b-checkbox>
             </div>
           </div>
         </div>
         <div class="checkboxes content">
           <h4 class="checkboxHeader">Analysis:</h4>
           <div class="checkboxDiv">
-            <div v-for="(state, name) in VIEWABLE_COLUMNS['ANALYSIS']" :key="name" class="control">
-              <b-checkbox v-model="VIEWABLE_COLUMNS['ANALYSIS'][name]">
-                {{
+            <div
+              v-for="(state, name) in VIEWABLE_COLUMNS['ANALYSIS']"
+              :key="name"
+              class="control"
+            >
+              <b-checkbox v-model="VIEWABLE_COLUMNS['ANALYSIS'][name]">{{
                 COLUMNS_TO_LABELS[name]
-                }}
-              </b-checkbox>
+              }}</b-checkbox>
             </div>
           </div>
         </div>
       </div>
     </b-collapse>
     <section class="tableInfo">
-      <!-- <span>
-        <b class="totalChecked">Total selected: {{ checkedRows.length }}</b>
-      </span>-->
       <download-csv
         class="TableHeader--Button"
         :data="prepareDataForExporting(data)"
@@ -79,7 +88,9 @@
         :fields="filterFieldsToExport(FIELDS_TO_EXPORT, VIEWABLE_COLUMNS)"
         :name="'data_filtered_' + new Date().toLocaleDateString()"
       >
-        <b-button type="is-link" rounded outlined>Download only visible columns as CSV</b-button>
+        <b-button type="is-link" rounded outlined
+          >Download only visible columns as CSV</b-button
+        >
       </download-csv>
       <b-button
         class="TableHeader--Button"
@@ -87,7 +98,17 @@
         rounded
         :disabled="checkedRows.length === 0"
         v-on:click="confirmDeletePRAs"
-      >Delete {{ checkedRows.length }} checked entries</b-button>
+      >
+        Delete {{ checkedRows.length }} checked
+        {{ checkedRows.length === 1 ? "entry" : "entries" }}
+      </b-button>
+      <b-button
+        class="TableHeader--Button"
+        type="is-primary"
+        rounded
+        v-on:click="generatePDFs"
+        >Generate PDF</b-button
+      >
     </section>
     <b-table
       class="table"
@@ -104,7 +125,13 @@
       :checked-rows.sync="checkedRows"
     >
       <template slot-scope="props">
-        <b-table-column centered custom-key="View" field="id" label="View" visible>
+        <b-table-column
+          centered
+          custom-key="View"
+          field="id"
+          label="View"
+          visible
+        >
           <b-button
             type="is-primary"
             outlined
@@ -116,7 +143,8 @@
                 updating: true,
               },
             }"
-          >View</b-button>
+            >View</b-button
+          >
         </b-table-column>
         <b-table-column
           field="county"
@@ -134,6 +162,7 @@
           searchable
           centered
           sortable
+          width="15"
           :visible="VIEWABLE_COLUMNS['INITIAL_INFO']['lea']"
         >
           <span class="tag is-medium">{{ props.row.lea }}</span>
@@ -158,9 +187,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.dateofrequest
-            ? new Date(props.row.dateofrequest).toLocaleDateString()
-            : ""
+              props.row.dateofrequest
+                ? new Date(props.row.dateofrequest).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -174,9 +203,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.startdaterequested
-            ? new Date(props.row.startdaterequested).toLocaleDateString()
-            : ""
+              props.row.startdaterequested
+                ? new Date(props.row.startdaterequested).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -190,9 +219,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.enddaterequested
-            ? new Date(props.row.enddaterequested).toLocaleDateString()
-            : ""
+              props.row.enddaterequested
+                ? new Date(props.row.enddaterequested).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -206,9 +235,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.startdatereturned
-            ? new Date(props.row.startdatereturned).toLocaleDateString()
-            : ""
+              props.row.startdatereturned
+                ? new Date(props.row.startdatereturned).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -222,9 +251,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.enddatereturned
-            ? new Date(props.row.enddatereturned).toLocaleDateString()
-            : ""
+              props.row.enddatereturned
+                ? new Date(props.row.enddatereturned).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -238,9 +267,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.dateoflastcontact
-            ? new Date(props.row.dateoflastcontact).toLocaleDateString()
-            : ""
+              props.row.dateoflastcontact
+                ? new Date(props.row.dateoflastcontact).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -281,7 +310,9 @@
           :visible="VIEWABLE_COLUMNS['INITIAL_INFO']['issheriffsdept']"
           sortable
         >
-          <span class="tag is-medium">{{ props.row.issheriffsdept ? "SD" : "PD" }}</span>
+          <span class="tag is-medium">
+            {{ props.row.issheriffsdept ? "SD" : "PD" }}
+          </span>
         </b-table-column>
         <b-table-column
           field="datatype"
@@ -303,9 +334,9 @@
         >
           <span class="tag is-medium">
             {{
-            props.row.datereceived
-            ? new Date(props.row.datereceived).toLocaleDateString()
-            : ""
+              props.row.datereceived
+                ? new Date(props.row.datereceived).toLocaleDateString()
+                : ""
             }}
           </span>
         </b-table-column>
@@ -386,19 +417,18 @@
 
 <script>
 import axios from "axios";
-import JsonCSV from "vue-json-csv";
 
 import {
   COLUMNS_TO_LABELS,
   VIEWABLE_COLUMNS,
-  SEARCHABLE_COLUMNS,
-  FIELDS_TO_EXPORT
+  FIELDS_TO_EXPORT,
 } from "../../definitions.js";
 import {
   filterFieldsToExport,
   objectValuesToString,
-  prepareDataForExporting
-} from "./csvExport.js";
+  prepareDataForExporting,
+} from "./csvExport";
+import { createPDF } from "./pdfExport";
 
 export default {
   name: "Table",
@@ -419,18 +449,22 @@ export default {
 
       filterFieldsToExport,
       objectValuesToString,
-      prepareDataForExporting
+      prepareDataForExporting,
+      createPDF,
     };
   },
   // When the component mounts, fetch data from backend and store in 'data' attribute
-  mounted() {
-    axios
-      .get("https://pra-tracking-dev.herokuapp.com/api/pra?fields=all")
-      .then(response => {
-        this.data = response.data;
-      });
+  async mounted() {
+    const resp = await axios.get(
+      "https://pra-tracking-dev.herokuapp.com/api/pra?fields=all"
+    );
+    this.data = resp.data;
   },
   methods: {
+    generatePDFs: function() {
+      this.createPDF(this.data);
+      console.log("done");
+    },
     // Used to sort dates in the table. First pass in the field name,
     //   which returns the function to sort that field.
     dateSort(field) {
@@ -446,7 +480,7 @@ export default {
         `https://pra-tracking-dev.herokuapp.com/api/pra/${praID}`
       );
       // Delete from local data
-      const deletedItemIdx = this.data.findIndex(pra => pra.id === praID);
+      const deletedItemIdx = this.data.findIndex((pra) => pra.id === praID);
       this.data.splice(deletedItemIdx, 1);
     },
     deletePRAs: async function(PRAs) {
@@ -469,7 +503,7 @@ export default {
         confirmText: "Delete",
         type: "is-danger",
         hasIcon: true,
-        onConfirm: () => this.deletePRAs(this.checkedRows)
+        onConfirm: () => this.deletePRAs(this.checkedRows),
       });
     },
     alertDeleteFailure() {
@@ -480,10 +514,10 @@ export default {
         message: "Successfully deleted",
         type: "is-danger",
         duration: 5000,
-        position: "is-bottom"
+        position: "is-bottom",
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

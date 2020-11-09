@@ -59,8 +59,7 @@ export default {
         if (response.status === 200) {
           config.ACCESS_CONTROL = response.data.access;
           localStorage.setItem("access", response.data.access);
-          // Expire in two weeks
-          const expiryDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
+          const expiryDate = new Date(Date.now() + config.SESSION_LENGTH);
           localStorage.setItem("expiry", expiryDate.toUTCString());
           this.alertLoginSuccess();
         } else {

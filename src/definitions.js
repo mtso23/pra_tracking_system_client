@@ -101,18 +101,32 @@ export const FIELDS_TO_EXPORT = [
   "dateanalyzed",
 ];
 
+// Fields to export for pdf
+// exclues: variables, comments, updates, linktoprarequest
+export const fields_to_pdf = [
+  "dateofrequest",
+  "county",
+  "lea",
+  "datatype",
+  "startdatereturned",
+  "enddatereturned",
+  "dateoflastcontact",
+  "currentstatus",
+  "leadmember",
+];
+
 // Map of db field names to column labels for table
 export const COLUMNS_TO_LABELS = {
   county: "County",
   lea: "LEA",
-  dateofrequest: "Date of request",
+  dateofrequest: "Request date",
   startdaterequested: "Start date requested",
   enddaterequested: "End date requested",
   currentstatus: "Status",
   startdatereturned: "Start date returned",
   enddatereturned: "End date returned",
   leadmember: "Lead member",
-  dateoflastcontact: "Date of last contact",
+  dateoflastcontact: "Last contact (date)",
   linktoprarequest: "Link to PRA Request",
   issheriffsdept: "SD/PD",
   datatype: "Data type",

@@ -6,6 +6,7 @@ const config = {
       new Date(localStorage.getItem("expiry")) >= new Date() &&
       localStorage.getItem("access")) ||
     "none",
+  SESSION_LENGTH: 14 * 24 * 60 * 60 * 1000, // 2 weeks in ms
 };
 
 export default config;

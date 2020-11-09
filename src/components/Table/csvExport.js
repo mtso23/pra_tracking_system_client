@@ -13,7 +13,7 @@ export const objectValuesToString = (obj) => {
 };
 
 // Converts an object to a string with each key/value on a newline
-const objectToString = (obj) => {
+export const objectToString = (obj) => {
   let str = "";
   for (const key in obj) {
     str += `${key}: ${obj[key]}\n`;

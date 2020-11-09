@@ -9,7 +9,6 @@
           <div>
             <b-button
               class="Header--Logout"
-              size="is-medium"
               type="is-primary is-light"
               v-on:click="logout"
               native-type="button"
